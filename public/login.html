@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in · CoraByte Payroll</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <main class="auth">
+    <div class="auth-brand">
+      <span class="auth-mark">C</span>
+      <span class="auth-name">CoraByte</span>
+      <span class="auth-product">Payroll</span>
+    </div>
+
+    <!-- Sign in -->
+    <form class="auth-card" id="login-form" hidden novalidate>
+      <h1>Sign in</h1>
+      <p class="auth-sub">Use the account your organization's admin gave you.</p>
+      <label for="login-username">Username</label>
+      <input id="login-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+      <label for="login-password">Password</label>
+      <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+      <p class="auth-error" role="alert"></p>
+      <button type="submit">Sign in</button>
+      <p class="auth-switch" id="to-register" hidden>New organization? <a href="#register">Register it</a></p>
+    </form>
+
+    <!-- Register an organisation (also the first-run setup) -->
+    <form class="auth-card" id="register-form" hidden novalidate>
+      <h1 id="register-title">Register your organization</h1>
+      <p class="auth-sub" id="register-sub">Your organization gets its own clients, employees, payroll and users.
+        You become its admin.</p>
+      <label for="reg-org">Organization name</label>
+      <input id="reg-org" name="org_name" autocomplete="organization" placeholder="e.g. PT Contoh Konsultan" required>
+      <label for="reg-name">Your name</label>
+      <input id="reg-name" name="name" autocomplete="name" required>
+      <label for="reg-username">Username</label>
+      <input id="reg-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false"
+             placeholder="letters, digits, dot or dash" required>
+      <label for="reg-password">Password · at least 8 characters</label>
+      <input id="reg-password" name="password" type="password" autocomplete="new-password" required>
+      <label for="reg-again">Password again</label>
+      <input id="reg-again" name="again" type="password" autocomplete="new-password" required>
+      <p class="auth-error" role="alert"></p>
+      <button type="submit">Create organization</button>
+      <p class="auth-switch" id="to-login">Already have an account? <a href="#login">Sign in</a></p>
+    </form>
+
+    <p class="auth-foot">CoraByte Payroll</p>
+  </main>
+  <script src="/js/login.js"></script>
+</body>
+</html>

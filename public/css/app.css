@@ -1,0 +1,743 @@
+/* ============================================================================
+   CoraByte Payroll — app.css: layout and components (.pr-*), payslip and
+   remittance documents (.ps-*, .rm-*). Colours are tokens (--pr-*), defined
+   once below; theme.css re-points them. Every screen rule is scoped under
+   .gki-app.pr. The payslip/remittance documents load this file on its own.
+   ========================================================================== */
+:root{
+  /* page and text — brief §10 */
+  --pr-bg:#F4F6FB;            /* body                                         */
+  --pr-ink:#0B0F2A;           /* text, navy                                   */
+  --pr-ink-2:#5A6286;         /* secondary                                    */
+  --pr-label:#6B7396;         /* labels                                       */
+  --pr-faint:#9AA1BF;         /* source lines, placeholders, column heads     */
+
+  /* cards — brief §10 */
+  --pr-card:#FFFFFF;
+  --pr-card-line:#E3E6F0;
+  --pr-card-radius:14px;
+  --pr-card-shadow:0 1px 2px rgba(11,15,42,.04),0 8px 24px -12px rgba(11,15,42,.12);
+  --pr-pick-shadow:0 1px 2px rgba(11,15,42,.05);
+  --pr-rule:#EEF0F6;          /* light row lines inside a card                */
+  --pr-avatar:#EEF0F6;
+
+  /* fields — brief §10 */
+  --pr-field:#F7F8FC;
+  --pr-field-line:#DCE0EE;
+  --pr-kbd-line:#D5DAEA;
+
+  /* red — ONLY primary button, selected segment, on-toggle, PILOT chip */
+  --pr-red:#FF4040;
+  --pr-red-ink:#E02828;
+  --pr-red-soft:rgba(255,64,64,.08);
+  --pr-red-edge:rgba(255,64,64,.35);
+  --pr-red-row:#FFF5F5;
+  --pr-red-glow:0 0 0 1px rgba(255,64,64,.4),0 6px 16px -6px rgba(255,64,64,.55);
+  --pr-on-red:#FFFFFF;
+
+  /* status — green dot with a 3px halo */
+  --pr-green:#1FBA78;
+  --pr-green-ink:#138A58;
+  --pr-green-soft:rgba(31,186,120,.08);
+  --pr-green-edge:rgba(31,186,120,.35);
+  --pr-green-halo:rgba(31,186,120,.18);
+
+  /* amber — a warning that does not block (Review checks) */
+  --pr-amber:#B45309;
+  --pr-amber-soft:rgba(245,158,11,.14);
+  --pr-amber-edge:rgba(245,158,11,.4);
+  --pr-red-ring:rgba(255,64,64,.15);
+  --pr-red-faded:#FFB3B3;
+  --pr-green-ring:rgba(31,186,120,.45);
+  --pr-green-ck:rgba(31,186,120,.12);
+  --pr-paper-shadow:0 0 0 1px #E3E6F0,0 12px 32px -12px rgba(11,15,42,.25);
+
+  /* THE PAYSLIP (brief §7, render A3) — navy rules, light row lines */
+  --pr-slip-navy:#014A7F;      /* brand blue: rules, headings, net pay        */
+  --pr-slip-accent:#49BDB7;    /* teal accent bar                              */
+  --pr-slip-wash:#EAF5F6;      /* net-pay band                                 */
+  --pr-slip-text:#10202E;
+  --pr-slip-ink-2:#6B7090;
+  --pr-slip-faint:#8A8FA8;
+  --pr-slip-rule:#ECEEF4;
+  --pr-slip-paper:#FFFFFF;
+
+  /* type — IBM Plex Sans (text) + IBM Plex Mono (labels, numbers, codes) */
+  --pr-sans:"IBM Plex Sans",system-ui,sans-serif;
+  --pr-mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  /* the app's pop-up (spine ui.confirm, 2026-10-21) */
+  --pr-scrim:rgba(11,15,42,.42);
+  --pr-modal-shadow:0 1px 2px rgba(11,15,42,.06),0 24px 64px -16px rgba(11,15,42,.45);
+  /* redesign 2026-10-22 (operator prototype C:\PAYROLL) — moved here from the
+     rules below so no colour literal sits outside this block (constitution §4) */
+  --pr-warn:#F59E0B;          /* orange warning cards, invalid fields          */
+  --pr-warn-ink:#B45309;
+  --pr-warn-bg:#FFF6E8;
+  --pr-warn-edge:rgba(245,158,11,.55);
+  --pr-warn-ring:rgba(245,158,11,.18);
+  --pr-ok-bg:#E6F6EC;         /* calc self-test ✓ badge                         */
+  --pr-ok-ink:#0f7a3d;
+  --pr-ok-edge:#BFE5CC;
+  --pr-on-color:#FFFFFF;      /* text on a red / green fill                     */
+  --pr-pop-shadow:0 12px 36px rgba(20,30,60,.18);  /* dropdown panel, self-test card */
+  --pr-mail-ink:#002451;      /* email text in the draft preview (GANA signature navy, as api/send writes it) */
+}
+
+/* ── frame ─────────────────────────────────────────────────────────────── */
+.gki-app.pr .gki-body{background:var(--pr-bg)}
+.gki-app.pr .gki-pane{background:var(--pr-bg);color:var(--pr-ink);font-family:var(--pr-sans);
+  padding:20px 24px;font-size:13px}
+.pr-mono{font-family:var(--pr-mono)}
+
+/* ── the top row: client picker · ⌘K · chip · primary ─────────────────── */
+.pr-top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.pr-pick{position:relative;display:flex;align-items:center;gap:10px;background:var(--pr-card);
+  border:1px solid var(--pr-field-line);border-radius:10px;padding:8px 12px;min-width:340px;
+  box-shadow:var(--pr-pick-shadow)}
+.pr-pick img,.pr-pick .pr-logo0{width:30px;height:30px;border-radius:8px;object-fit:contain}
+.pr-pick b{font-size:13px;font-weight:600}
+.pr-pick i{margin-left:auto;font-style:normal;color:var(--pr-label);font-size:12px}
+.pr-pick select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:13px}
+.pr-kbd{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-label);border:1px solid var(--pr-kbd-line);
+  border-radius:5px;padding:2px 6px}
+.pr-chip{font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.06em;padding:4px 8px;border-radius:999px;
+  background:var(--pr-red-soft);color:var(--pr-red-ink);border:1px solid var(--pr-red-edge);white-space:nowrap}
+.pr-chip.g{background:var(--pr-green-soft);color:var(--pr-green-ink);border-color:var(--pr-green-edge)}
+.pr-chip.n{background:var(--pr-field);color:var(--pr-ink-2);border-color:var(--pr-field-line)}
+.pr-btn{margin-left:auto;white-space:nowrap;flex:none;background:var(--pr-red);color:var(--pr-on-red);border:0;border-radius:8px;
+  padding:9px 16px;font-weight:600;font-size:13px;font-family:var(--pr-sans);box-shadow:var(--pr-red-glow);cursor:pointer}
+.pr-btn[disabled]{opacity:.45;cursor:default;box-shadow:none}
+.pr-btn2{background:var(--pr-card);color:var(--pr-ink);border:1px solid var(--pr-field-line);border-radius:8px;
+  padding:7px 12px;font-size:12.5px;font-family:var(--pr-sans);cursor:pointer}
+.pr-btn2[disabled]{opacity:.5;cursor:default}
+
+/* one sentence from the store or a check, shown as it stands */
+.pr-msg{font-size:12.5px;color:var(--pr-ink-2);margin:-8px 0 14px}
+.pr-msg.bad{color:var(--pr-red-ink)}
+.pr-msg.ok{color:var(--pr-green-ink)}
+
+/* ── cards ─────────────────────────────────────────────────────────────── */
+.pr-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:16px}
+.pr-card{background:var(--pr-card);border:1px solid var(--pr-card-line);border-radius:var(--pr-card-radius);
+  padding:16px 18px;box-shadow:var(--pr-card-shadow)}
+.pr-card h4,.pr-box h4{margin:0 0 14px;font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.14em;
+  color:var(--pr-label);font-weight:500;display:flex;justify-content:space-between;gap:8px}
+.pr-box h4{margin-bottom:12px}
+
+/* identity card (Clients) */
+.pr-id{grid-column:1/-1;display:flex;align-items:center;gap:16px}
+.pr-id img,.pr-id .pr-logo0{width:64px;height:64px;border-radius:14px;object-fit:contain}
+.pr-id b{font-size:18px;letter-spacing:.01em}
+.pr-id span{display:block;color:var(--pr-ink-2);font-size:12.5px;margin-top:3px}
+.pr-id .pr-src{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-faint);margin-top:6px}
+.pr-stats{margin-left:auto;display:flex;gap:28px}
+.pr-stat i{display:block;font-style:normal;font-family:var(--pr-mono);font-size:10px;color:var(--pr-label);letter-spacing:.12em}
+.pr-stat b{font-size:22px;font-family:var(--pr-mono);font-weight:500}
+.pr-logo0{display:flex;align-items:center;justify-content:center;background:var(--pr-avatar);
+  color:var(--pr-label);font-family:var(--pr-mono);font-size:11px}
+
+/* ── fields ────────────────────────────────────────────────────────────── */
+.pr-f{margin-bottom:12px}
+.pr-f label{display:block;font-family:var(--pr-mono);font-size:10px;letter-spacing:.12em;color:var(--pr-label);margin-bottom:6px}
+.pr-f input,.pr-f select{width:100%;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:8px;
+  color:var(--pr-ink);padding:9px 11px;font-size:13px;font-family:inherit}
+.pr-f input.pr-mono,.pr-f select.pr-mono{font-family:var(--pr-mono)}
+.pr-f input[readonly]{color:var(--pr-ink-2)}
+.pr-f input::placeholder{color:var(--pr-faint)}
+.pr-g2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.pr-full{grid-column:1/-1}
+
+/* segmented control — the selected segment is red */
+.pr-seg{display:flex;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:8px;padding:3px;gap:3px}
+.pr-seg button{flex:1;text-align:center;font-family:var(--pr-mono);font-size:11.5px;padding:6px 0;border-radius:6px;
+  color:var(--pr-ink-2);background:transparent;border:0;cursor:pointer}
+.pr-seg button.on{background:var(--pr-red);color:var(--pr-on-red)}
+.pr-seg button[disabled]{cursor:default;opacity:.5}
+.pr-seg.sm button{font-size:10.5px;padding:4px 0}
+
+/* toggle — on is red */
+.pr-tog{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-tog:first-of-type{border-top:0}
+.pr-sw{width:34px;height:20px;border-radius:999px;background:var(--pr-red);position:relative;border:0;padding:0;cursor:pointer;flex:none}
+.pr-sw:after{content:"";position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--pr-card)}
+.pr-sw.off{background:var(--pr-field-line)}
+.pr-sw.off:after{right:auto;left:3px}
+
+.pr-dot{width:7px;height:7px;border-radius:50%;background:var(--pr-green);display:inline-block;margin-right:6px;
+  box-shadow:0 0 0 3px var(--pr-green-halo)}
+
+/* ── Employees: list + detail ──────────────────────────────────────────── */
+.pr-lay{display:grid;grid-template-columns:400px 1fr;gap:16px;align-items:start}
+.pr-list{padding:8px}
+.pr-list h4{padding:8px 10px 0}
+.pr-srch{margin:0 10px 10px;display:flex;align-items:center;gap:8px;background:var(--pr-field);
+  border:1px solid var(--pr-field-line);border-radius:8px;padding:0 10px}
+.pr-srch input{flex:1;border:0;background:transparent;padding:8px 0;font-size:13px;font-family:var(--pr-sans);color:var(--pr-ink);outline:0}
+.pr-srch input::placeholder{color:var(--pr-faint)}
+.pr-er{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+.pr-er.on{background:var(--pr-red-row);border-color:var(--pr-red-edge)}
+.pr-av{width:34px;height:34px;border-radius:9px;background:var(--pr-avatar);color:var(--pr-ink);font-family:var(--pr-mono);
+  font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.pr-er.on .pr-av{background:var(--pr-red);color:var(--pr-on-red)}
+.pr-er b{font-size:13px;font-weight:600;display:block}
+.pr-er span{font-size:12px;color:var(--pr-ink-2)}
+.pr-er .r{margin-left:auto;text-align:right}
+.pr-er .r b{font-family:var(--pr-mono);font-weight:500;font-size:12.5px}
+.pr-er .r span{font-family:var(--pr-mono);font-size:10px;letter-spacing:.1em;color:var(--pr-label)}
+.pr-add{display:block;width:calc(100% - 20px);margin:8px 10px 6px;border:1px dashed var(--pr-field-line);border-radius:10px;
+  padding:10px;text-align:center;font-size:12.5px;color:var(--pr-ink-2);background:transparent;font-family:var(--pr-sans);cursor:pointer}
+.pr-add b{color:var(--pr-red-ink);font-weight:600}
+.pr-empty{padding:18px 10px;color:var(--pr-ink-2);font-size:12.5px}
+
+.pr-dh{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.pr-dh .pr-av{width:48px;height:48px;font-size:15px;border-radius:12px;background:var(--pr-red);color:var(--pr-on-red)}
+.pr-dh b{font-size:18px;display:block}
+.pr-dh span{font-size:12.5px;color:var(--pr-ink-2)}
+.pr-dh .st{margin-left:auto;display:flex;gap:8px;align-items:center}
+.pr-sub{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pr-box{border:1px solid var(--pr-card-line);border-radius:12px;padding:14px 16px}
+.pr-who{margin-bottom:16px}
+.pr-who .pr-g5{display:grid;grid-template-columns:120px 1.6fr 1.2fr 1fr 140px 140px;gap:0 12px}
+
+/* salary components */
+.pr-comp{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-comp:first-of-type{border-top:0}
+.pr-comp .nm{flex:1}
+.pr-comp i{font-style:normal;font-family:var(--pr-mono);font-size:10px;letter-spacing:.1em;color:var(--pr-label)}
+.pr-comp input{width:130px;text-align:right;font-family:var(--pr-mono);background:var(--pr-field);border:1px solid var(--pr-field-line);
+  border-radius:6px;padding:5px 8px;font-size:12.5px;color:var(--pr-ink)}
+.pr-comp input.nmi{width:auto;flex:1;text-align:left;font-family:var(--pr-sans)}
+.pr-comp .x{border:0;background:transparent;color:var(--pr-faint);cursor:pointer;font-size:14px;padding:0 2px}
+.pr-comp.tot{border-top:1px solid var(--pr-field-line);font-weight:600}
+.pr-comp.tot b{margin-left:auto;font-family:var(--pr-mono);font-weight:600}
+.pr-comp .fx{border:1px solid var(--pr-field-line);border-radius:5px;background:transparent;font-family:var(--pr-mono);
+  font-size:9.5px;letter-spacing:.1em;color:var(--pr-label);padding:2px 5px;cursor:pointer}
+.pr-comp .fx.on{color:var(--pr-ink);border-color:var(--pr-label)}
+.pr-link{border:0;background:transparent;color:var(--pr-red-ink);font-family:var(--pr-sans);font-size:12.5px;
+  font-weight:600;padding:8px 0 0;cursor:pointer}
+
+/* BPJS per programme */
+.pr-bph,.pr-bp{display:grid;grid-template-columns:1fr 64px 150px;gap:10px;align-items:center}
+.pr-bph{font-family:var(--pr-mono);font-size:9.5px;letter-spacing:.12em;color:var(--pr-faint);padding-bottom:4px}
+.pr-bp{padding:7px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-bp:first-of-type{border-top:0}
+.pr-bp i{font-style:normal;font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-label)}
+.pr-base{font-family:var(--pr-mono);font-size:10px;color:var(--pr-faint);margin-top:8px;line-height:1.6}
+.pr-base.bad{color:var(--pr-red-ink)}
+
+/* the status line in the kit's status bar */
+.gki-app.pr .gki-statusbar .pr-st-ok{color:var(--pr-green-ink)}
+.gki-app.pr .gki-statusbar .pr-st-bad{color:var(--pr-red-ink)}
+
+@media (max-width:1100px){
+  .pr-grid{grid-template-columns:1fr 1fr}
+  .pr-lay{grid-template-columns:1fr}
+  .pr-sub{grid-template-columns:1fr}
+  .pr-who .pr-g5{grid-template-columns:1fr 1fr}
+}
+
+/* ── Payroll run · Review & lock (push 2; renders run / review) ─────────── */
+.pr-per{display:flex;align-items:center;gap:6px;background:var(--pr-card);border:1px solid var(--pr-field-line);
+  border-radius:10px;padding:5px;box-shadow:var(--pr-pick-shadow)}
+.pr-per button{font-family:var(--pr-mono);font-size:12px;color:var(--pr-label);padding:4px 8px;border-radius:6px;
+  border:0;background:transparent;cursor:pointer}
+.pr-per b{font-size:13px;font-weight:600;padding:0 8px;min-width:110px;text-align:center}
+.pr-steps{display:flex;align-items:center;margin-left:8px;flex:0 1 auto;min-width:0}
+.pr-top.run .pr-pick{min-width:300px}
+.pr-days span{white-space:nowrap}
+.pr-stp{display:flex;align-items:center;gap:8px;font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.12em;color:var(--pr-faint)}
+.pr-stp i{font-style:normal;width:20px;height:20px;border-radius:50%;border:1px solid var(--pr-field-line);display:flex;
+  align-items:center;justify-content:center;font-size:10px;background:var(--pr-card)}
+.pr-stp.on{color:var(--pr-ink)}
+.pr-stp.on i{background:var(--pr-red);border-color:var(--pr-red);color:var(--pr-on-red);box-shadow:0 0 0 3px var(--pr-red-ring)}
+.pr-stp.done{color:var(--pr-green-ink)}
+.pr-stp.done i{background:var(--pr-green-soft);border-color:var(--pr-green-ring);color:var(--pr-green-ink)}
+.pr-ln{width:28px;height:1px;background:var(--pr-field-line);margin:0 10px}
+.pr-ln.done{background:var(--pr-green-ring)}
+.pr-btn.go:after{content:"  →"}
+.pr-btn.dis{background:var(--pr-red-faded);box-shadow:none}
+.pr-sec{margin-left:auto;white-space:nowrap;flex:none;background:var(--pr-card);color:var(--pr-ink);border:1px solid var(--pr-field-line);border-radius:8px;
+  padding:9px 14px;font-weight:600;font-size:13px;font-family:var(--pr-sans);cursor:pointer}
+.pr-sec + .pr-btn{margin-left:10px}
+.pr-chip.w{background:var(--pr-amber-soft);color:var(--pr-amber);border-color:var(--pr-amber-edge)}
+.pr-chip.k{background:var(--pr-ink);color:var(--pr-on-red);border-color:var(--pr-ink)}
+
+.pr-lay2{display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start}
+.pr-lay3{display:grid;grid-template-columns:1fr 600px;gap:16px;align-items:start}
+.pr-side{display:flex;flex-direction:column;gap:16px}
+.pr-mt{margin-top:16px}
+
+.pr-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.pr-tbl th{font-family:var(--pr-mono);font-size:9.5px;letter-spacing:.12em;color:var(--pr-label);font-weight:500;text-align:right;
+  padding:0 10px 10px;border-bottom:1px solid var(--pr-card-line)}
+.pr-tbl th:first-child,.pr-tbl td:first-child{text-align:left}
+.pr-tbl td{padding:12px 10px;border-bottom:1px solid var(--pr-rule);text-align:right;font-family:var(--pr-mono);font-size:12.5px;white-space:nowrap}
+.pr-tbl td:first-child{font-family:var(--pr-sans)}
+.pr-tbl tbody tr{cursor:pointer}
+.pr-tbl tr.on td{background:var(--pr-red-row)}
+.pr-tbl tr.on td:first-child{box-shadow:inset 3px 0 0 var(--pr-red)}
+.pr-tbl tfoot td{border-bottom:0;border-top:1px solid var(--pr-field-line);font-weight:600;padding-top:14px}
+.pr-tbl td.net{font-weight:600;font-size:13px}
+.pr-tbl td.refused{white-space:normal;text-align:left;font-family:var(--pr-sans);color:var(--pr-red-ink);font-size:12.5px}
+.pr-tbl .gh{width:110px;text-align:right;font-family:var(--pr-mono);background:var(--pr-field);border:1px solid var(--pr-field-line);
+  border-radius:6px;padding:4px 6px;font-size:12px;color:var(--pr-ink)}
+.pr-nm{display:flex;align-items:center;gap:10px}
+.pr-nm b{font-size:13px;font-weight:600;display:block}
+.pr-nm span{font-family:var(--pr-mono);font-size:10px;color:var(--pr-label);letter-spacing:.08em}
+.pr-nm .pr-av{width:30px;height:30px;border-radius:8px;font-size:11px}
+.pr-tbl tr.on .pr-av{background:var(--pr-red);color:var(--pr-on-red)}
+.pr-pos{color:var(--pr-green-ink)}
+.pr-neg{color:var(--pr-red-ink)}
+.pr-mut{color:var(--pr-faint)}
+.pr-ok{font-size:10px;letter-spacing:.08em;color:var(--pr-green-ink);background:var(--pr-green-soft);border:1px solid var(--pr-green-edge);
+  border-radius:999px;padding:3px 7px}
+.pr-bad{font-size:10px;letter-spacing:.08em;color:var(--pr-red-ink);background:var(--pr-red-soft);border:1px solid var(--pr-red-edge);
+  border-radius:999px;padding:3px 7px}
+.pr-note{font-family:var(--pr-mono);font-size:10px;color:var(--pr-faint);margin-top:12px;letter-spacing:.04em;line-height:1.6}
+
+.pr-vi{display:grid;grid-template-columns:1fr 34px 120px 22px;gap:8px;align-items:center;padding:6px 0;font-size:13px}
+.pr-vi input{width:100%;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:8px;padding:7px 9px;
+  font-family:var(--pr-mono);font-size:12.5px;color:var(--pr-ink)}
+.pr-vi input.amt{text-align:right}
+.pr-vi .sg{border:1px solid var(--pr-field-line);background:var(--pr-card);border-radius:6px;font-family:var(--pr-mono);
+  font-size:13px;padding:5px 0;cursor:pointer;color:var(--pr-ink)}
+.pr-vi .x{color:var(--pr-faint);text-align:center;border:0;background:transparent;cursor:pointer;font-size:14px}
+.pr-addv{display:block;width:100%;margin-top:8px;border:1px dashed var(--pr-field-line);border-radius:8px;padding:8px;text-align:center;
+  font-size:12.5px;color:var(--pr-red-ink);font-weight:600;background:transparent;font-family:var(--pr-sans);cursor:pointer}
+.pr-days{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--pr-ink-2);margin-top:10px}
+.pr-days input{width:56px;text-align:center;font-family:var(--pr-mono);background:var(--pr-field);border:1px solid var(--pr-field-line);
+  border-radius:6px;padding:5px;font-size:12.5px;color:var(--pr-ink)}
+
+.pr-kv{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-kv:first-of-type{border-top:0}
+.pr-kv b{margin-left:auto;font-family:var(--pr-mono);font-weight:500}
+.pr-kv small{font-family:var(--pr-mono);font-size:10px;color:var(--pr-faint)}
+.pr-kv.big{border-top:1px solid var(--pr-field-line);padding-top:12px;margin-top:4px}
+.pr-kv.big span{font-weight:600}
+.pr-kv.big b{font-size:20px;font-weight:600}
+.pr-mini{font-family:var(--pr-mono);font-size:10px;color:var(--pr-label);letter-spacing:.1em;margin:14px 0 2px}
+.pr-refusal{color:var(--pr-red-ink);font-size:12.5px;line-height:1.5;padding:8px 0}
+
+.pr-selftest{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--pr-mono);font-size:11px;margin:-6px 0 14px;color:var(--pr-ink-2)}
+
+.pr-ck{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-ck:first-of-type{border-top:0}
+.pr-ck .ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
+.pr-ck .ic.y{background:var(--pr-green-ck);color:var(--pr-green-ink)}
+.pr-ck .ic.w{background:var(--pr-amber-soft);color:var(--pr-amber)}
+.pr-ck .ic.n{background:var(--pr-red-soft);color:var(--pr-red-ink)}
+.pr-ck b{margin-left:auto;font-family:var(--pr-mono);font-weight:500;font-size:12px;color:var(--pr-label);white-space:nowrap}
+.pr-ck small{display:block;font-size:11.5px;color:var(--pr-label)}
+.pr-ck a{color:var(--pr-label)}
+.pr-rv{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;border:1px solid transparent;margin:0 -10px;cursor:pointer}
+.pr-rv.on{background:var(--pr-red-row);border-color:var(--pr-red-edge)}
+.pr-rv .pr-av{width:32px;height:32px}
+.pr-rv.on .pr-av{background:var(--pr-red);color:var(--pr-on-red)}
+.pr-rv b{font-size:13px;font-weight:600;display:block}
+.pr-rv span{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-label)}
+.pr-rv .r{margin-left:auto;display:flex;align-items:center;gap:12px}
+.pr-mk{border:1px solid var(--pr-field-line);background:var(--pr-card);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;
+  font-family:var(--pr-sans);cursor:pointer;color:var(--pr-ink)}
+.pr-prev{padding:16px}
+.pr-pnav{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-family:var(--pr-mono);font-size:11px;color:var(--pr-label)}
+.pr-pnav .sp{margin-left:auto}
+.pr-pnav button{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-label);border:1px solid var(--pr-kbd-line);border-radius:5px;
+  padding:3px 8px;background:transparent;cursor:pointer}
+.pr-paper{width:568px;height:803px;overflow:hidden;border-radius:6px;box-shadow:var(--pr-paper-shadow);background:var(--pr-slip-paper)}
+.pr-paper iframe{width:794px;height:1123px;border:0;transform:scale(.7154);transform-origin:0 0}
+
+/* ── THE PAYSLIP document (payslip.js; brief §7, A4, render A3) ───────── */
+@page{size:A4;margin:0}
+.ps-body{margin:0;font-family:"Noto Sans","IBM Plex Sans",sans-serif;-webkit-font-smoothing:antialiased;color:var(--pr-slip-navy);
+  background:var(--pr-slip-paper)}
+.ps-pg{width:210mm;height:297mm;box-sizing:border-box;padding:1cm 1.5cm;position:relative}
+.ps-pg table{width:100%;border-collapse:collapse}
+.ps-n{text-align:right;font-variant-numeric:tabular-nums}
+.ps-hd{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;border-bottom:1.5px solid var(--pr-slip-navy)}
+.ps-co{display:flex;gap:14px;align-items:center}
+.ps-co img{width:52px;height:52px;display:block;object-fit:contain}
+.ps-co b{display:block;font-size:13px;letter-spacing:.04em;line-height:1.2}
+.ps-co span{display:block;font-size:8px;color:var(--pr-slip-ink-2);margin-top:4px;letter-spacing:.02em;line-height:1.5}
+.ps-tt{text-align:right;margin-bottom:3.7px}
+.ps-tt b{display:block;font-size:8px;letter-spacing:.18em;color:var(--pr-slip-ink-2);font-weight:600}
+.ps-tt strong{display:block;font-size:20px;letter-spacing:.01em;margin-top:4px;line-height:1}
+.ps-who{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;column-gap:28px;row-gap:14px;margin:24px 0}
+.ps-who i{display:block;font-style:normal;font-size:8px;letter-spacing:.18em;font-weight:600;text-transform:uppercase;color:var(--pr-slip-faint)}
+.ps-who b{display:block;font-size:10.5px;margin-top:4px;font-weight:600}
+.ps-cols{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}
+.ps-cols h3{font-size:8px;letter-spacing:.18em;font-weight:600;margin:0;padding:0 0 6px;color:var(--pr-slip-navy);
+  border-bottom:1px solid var(--pr-slip-navy);display:flex;justify-content:space-between}
+.ps-cols h3 span+span{color:var(--pr-slip-faint)}
+.ps-cols td{font-size:10.5px;padding:6px 0;border-bottom:1px solid var(--pr-slip-rule);line-height:1.25}
+.ps-cols tr.ps-t td{font-weight:700;border-top:1px solid var(--pr-slip-navy);border-bottom:0;padding-top:7px}
+.ps-net{margin-top:24px;display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px solid var(--pr-slip-navy);
+  border-bottom:1.5px solid var(--pr-slip-navy);padding:10px 0 9px}
+.ps-net span{font-size:8px;letter-spacing:.18em;font-weight:600}
+.ps-net b{font-size:20px;font-variant-numeric:tabular-nums;line-height:1}
+.ps-net b small{font-size:8px;font-weight:600;margin-right:5px;color:var(--pr-slip-ink-2);letter-spacing:.18em}
+.ps-meta{display:flex;justify-content:space-between;gap:16px;font-size:10.5px;color:var(--pr-slip-ink-2);margin-top:8px}
+.ps-meta b{color:var(--pr-slip-navy);font-weight:600}
+.ps-note{font-size:8px;color:var(--pr-slip-faint);margin-top:24px;line-height:1.8;letter-spacing:.01em}
+.ps-foot{position:absolute;left:1.5cm;right:1.5cm;bottom:1cm;display:grid;grid-template-columns:1fr auto 1fr;font-size:8px;
+  color:var(--pr-slip-faint);border-top:1px solid var(--pr-slip-navy);padding-top:6px;letter-spacing:.18em;font-weight:600;
+  text-transform:uppercase}
+.ps-foot span:nth-child(2){text-align:center}
+/* v0.3 look: a brand accent bar on top, body text in near-black, the net pay
+   in a tinted band. Layout and content are unchanged. */
+.ps-pg::before{content:"";position:absolute;left:0;right:0;top:0;height:5mm;
+  background:linear-gradient(90deg,var(--pr-slip-navy) 0 72%,var(--pr-slip-accent) 72% 100%)}
+.ps-pg{padding-top:1.6cm}
+.ps-who b,.ps-cols td,.ps-meta{color:var(--pr-slip-text)}
+.ps-cols h3{color:var(--pr-slip-navy)}
+.ps-tt b{color:var(--pr-slip-accent)}
+.ps-net{background:var(--pr-slip-wash);border:0;border-left:3px solid var(--pr-slip-navy);padding:12px 14px;border-radius:2px}
+.ps-net b{color:var(--pr-slip-navy)}
+
+/* ── Outputs (push 3; render outputs) ──────────────────────────────────── */
+.pr-lay4{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}   /* 2:1, Activity alone on the right (2026-10-21) */
+.pr-meta2{font-family:var(--pr-mono);font-size:11px;color:var(--pr-label);margin-left:4px;white-space:nowrap}
+.pr-fl{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-fl:first-of-type{border-top:0}
+.pr-fi{width:34px;height:40px;border-radius:6px;background:var(--pr-red-row);color:var(--pr-red-ink);font-family:var(--pr-mono);
+  font-size:9px;font-weight:600;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;
+  border:1px solid var(--pr-red-edge);flex:none}
+.pr-fi.csv{background:var(--pr-green-soft);color:var(--pr-green-ink);border-color:var(--pr-green-edge)}
+.pr-fl b{font-family:var(--pr-mono);font-weight:500;font-size:12.5px;display:block}
+.pr-fl span{font-size:12px;color:var(--pr-label)}
+.pr-dl{margin-left:auto;border:1px solid var(--pr-field-line);border-radius:8px;padding:6px 10px;font-family:var(--pr-mono);
+  font-size:11.5px;background:var(--pr-card);color:var(--pr-ink);cursor:pointer;flex:none}
+.pr-dl[disabled]{opacity:.45;cursor:default}
+.pr-mail{background:var(--pr-field);border:1px solid var(--pr-card-line);border-radius:10px;padding:12px 14px;margin-top:12px}
+.pr-mr{display:grid;grid-template-columns:80px 1fr;gap:8px;padding:4px 0;font-size:12.5px}
+.pr-mr i{font-style:normal;font-family:var(--pr-mono);font-size:10px;letter-spacing:.12em;color:var(--pr-label);padding-top:2px}
+.pr-mr .ph{color:var(--pr-faint);font-family:var(--pr-mono)}
+.pr-acts{display:flex;gap:10px;margin-top:14px}
+.pr-acts .pr-btn,.pr-acts .pr-sec{margin-left:0}
+.pr-acts .pr-btn[disabled]{background:var(--pr-red-faded);box-shadow:none;opacity:1}
+.pr-acts .pr-sec[disabled]{opacity:.55;cursor:default}
+.pr-rt{display:grid;grid-template-columns:1fr 110px 110px;gap:8px;padding:7px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-rt b{font-family:var(--pr-mono);font-weight:500;text-align:right}
+.pr-rt.h{font-family:var(--pr-mono);font-size:9.5px;letter-spacing:.12em;color:var(--pr-label);border-top:0;padding-bottom:4px;margin-top:10px}
+.pr-rt.h:first-of-type{margin-top:0}
+.pr-rt.h span{text-align:right}
+.pr-rt.h span:first-child{text-align:left}
+.pr-rt.s{font-weight:600;border-top:1px solid var(--pr-field-line)}
+.pr-rt.s b{font-weight:600}
+.pr-lg{display:grid;grid-template-columns:118px 14px 1fr;gap:10px;align-items:start;padding:7px 0;font-size:13px}
+.pr-lg i{white-space:nowrap;font-style:normal;font-family:var(--pr-mono);font-size:11.5px;color:var(--pr-label);padding-top:1px}
+.pr-lg .d{width:9px;height:9px;border-radius:50%;background:var(--pr-green);margin-top:5px;box-shadow:0 0 0 3px var(--pr-green-halo)}
+.pr-lg .d.p{background:var(--pr-card);border:1.5px dashed var(--pr-faint);box-shadow:none;width:8px;height:8px}
+.pr-lg span small{display:block;font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-faint)}
+.pr-lg.p{color:var(--pr-faint)}
+
+/* the remittance summary page (print) — the payslip's grammar */
+.rm{margin-top:24px}
+.rm table{width:100%;border-collapse:collapse}
+.rm td{font-size:10.5px;padding:6px 0;border-bottom:1px solid var(--pr-slip-rule)}
+.rm tr.rm-h td{font-size:8px;letter-spacing:.18em;font-weight:600;border-bottom:1px solid var(--pr-slip-navy);padding-top:18px}
+.rm tr.ps-t td{font-weight:700;border-top:1px solid var(--pr-slip-navy);border-bottom:0}
+
+/* ── the app's pop-up — spine ui.confirm (2026-10-21, operator) ──────────
+   Replaces window.confirm for Lock. Tokens only; fades and lifts in. */
+.pr-modal-back{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:var(--pr-scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;transition:opacity .16s ease}
+.pr-modal-back.in{opacity:1}
+.pr-modal{width:100%;max-width:440px;background:var(--pr-card);border:1px solid var(--pr-card-line);
+  border-radius:var(--pr-card-radius);box-shadow:var(--pr-modal-shadow);padding:22px 22px 18px;
+  font-family:var(--pr-sans);color:var(--pr-ink);transform:translateY(8px) scale(.98);transition:transform .16s ease}
+.pr-modal-back.in .pr-modal{transform:none}
+.pr-modal-head{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.pr-modal-icon{flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:19px;background:var(--pr-red-soft);border:1px solid var(--pr-red-edge)}
+.pr-modal-kicker{font-family:var(--pr-mono);font-size:10px;letter-spacing:.14em;color:var(--pr-label);margin-bottom:3px}
+.pr-modal-title{margin:0;font-size:18px;font-weight:700;color:var(--pr-ink)}
+.pr-modal-rows{margin:0 0 14px;padding:4px 14px;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:10px}
+.pr-modal-rows div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--pr-rule)}
+.pr-modal-rows div:last-child{border-bottom:0}
+.pr-modal-rows dt{font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pr-label);align-self:center}
+.pr-modal-rows dd{margin:0;font-family:var(--pr-mono);font-size:13px;font-weight:600;text-align:right;color:var(--pr-ink)}
+.pr-modal-note{margin:0 0 18px;font-size:12.5px;line-height:1.5;color:var(--pr-ink-2)}
+.pr-modal-foot{display:flex;justify-content:flex-end;gap:10px}
+.pr-modal-foot .pr-btn{margin-left:0}
+.pr-modal-foot .pr-btn2{padding:9px 16px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.pr-modal-back,.pr-modal{transition:none}}
+
+/* redesign 2026-10-22: Employees = rows first, fields on Edit */
+.pr-lay1{display:block}
+.pr-lay1 .pr-list{padding:8px 12px}
+.pr-lay1 .pr-er .pr-btn2{margin-left:14px;padding:6px 14px}
+.pr-foot-save{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:16px}
+.pr-foot-save .pr-btn[hidden]{display:none}
+
+/* redesign 2026-10-22: content max width 1600px, centred (background stays full width) */
+.gki-app.pr .gki-pane{--pr-maxw:1600px;padding-left:max(var(--gki-pad),calc((100% - var(--pr-maxw)) / 2));padding-right:max(var(--gki-pad),calc((100% - var(--pr-maxw)) / 2))}
+.pr-backrow{margin:-6px 0 14px}
+.pr-listtop .pr-srch{flex:1;max-width:420px;margin:0}
+.pr-sel{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--pr-field-line);background:var(--pr-card);color:var(--pr-ink)}
+#_clients-list .pr-er .pr-btn2,.pr-list .pr-er .pr-btn2{margin-left:14px;padding:6px 14px}
+
+/* client logo placeholder (initials) — sized per place, fits 2 or 3 letters */
+.pr-logo0{font-weight:600;letter-spacing:0;flex:none;border-radius:8px;overflow:hidden;white-space:nowrap}
+.pr-pick .pr-logo0{width:30px;height:30px;font-size:11px}
+.pr-pick .pr-logo0[data-len="3"]{font-size:9.5px}
+.pr-er .pr-logo0{width:36px;height:36px;font-size:12px;border-radius:10px;color:var(--pr-ink-2)}
+.pr-er .pr-logo0[data-len="3"]{font-size:10.5px}
+.pr-id .pr-logo0{display:flex;width:64px;height:64px;font-size:22px;margin:0;border-radius:14px;color:var(--pr-ink-2);align-items:center;justify-content:center}
+.pr-id .pr-logo0[data-len="3"]{font-size:18px}
+
+/* searchable dropdown (combo.js) */
+.pr-combo{display:inline-flex;align-items:center;gap:10px;justify-content:space-between;font:inherit;font-size:13px;padding:8px 12px;border-radius:10px;border:1px solid var(--pr-field-line);background:var(--pr-card);color:var(--pr-ink);cursor:pointer;min-width:150px}
+.pr-combo i{font-style:normal;color:var(--pr-label);font-size:11px}
+.pr-combo:focus-visible{outline:2px solid var(--pr-red-edge)}
+/* client logo image — locked to the same box as its initials badge in each place
+   (picker 30 · list row 36 · identity card 64). Any upload size or ratio fits inside;
+   the upload size limit itself lives in the app that takes the upload (DATABASE/PEOPLE). */
+.pr-pick img,.pr-er img,.pr-id img{flex:none;display:block;box-sizing:border-box;object-fit:contain;object-position:center;max-width:none}
+.pr-er img{width:36px;height:36px;border-radius:10px}
+.pr-cpanel{position:absolute;z-index:9999;background:var(--pr-card);border:1px solid var(--pr-card-line);border-radius:12px;box-shadow:var(--pr-pop-shadow);padding:8px;outline:0}
+.pr-csearch{width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid var(--pr-field-line);background:var(--pr-field);color:var(--pr-ink);margin-bottom:6px}
+.pr-clist{max-height:260px;overflow:auto}
+.pr-copt{padding:8px 10px;border-radius:8px;font-size:13px;cursor:pointer;color:var(--pr-ink)}
+.pr-copt.hi{background:var(--pr-red-row)}
+.pr-copt.sel{font-weight:600}
+.pr-cempty{padding:10px;font-size:12.5px;color:var(--pr-ink-2)}
+.pr-fbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.pr-cpanel,.pr-cpanel input{font-family:'IBM Plex Sans',system-ui,sans-serif}
+.pr-list .pr-fbar{padding:0 10px;margin-top:2px}
+
+/* Payroll run header, stacked (redesign 2026-10-22): month, then steps, then client */
+.pr-runhead{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-bottom:14px}
+.pr-runhead .pr-steps{margin-left:0;width:100%;max-width:640px}
+.pr-runhead .pr-top{width:100%;margin-bottom:0}
+.pr-runhead .pr-top .pr-btn,.pr-runhead .pr-top .pr-btn2{margin-left:auto}
+.pr-runhead .pr-top .pr-btn ~ .pr-btn,.pr-runhead .pr-top .pr-btn2 ~ .pr-btn,.pr-runhead .pr-top .pr-btn2 ~ .pr-btn2{margin-left:0}
+
+/* every warning is a card */
+.pr-warncard,.pr-refusal,.pr-msg.bad{display:block;box-sizing:border-box;padding:12px 16px 12px 42px;margin:0 0 14px;border-radius:12px;background:var(--pr-red-row);border:1px solid var(--pr-red-edge);color:var(--pr-red-ink);font-size:13px;line-height:1.5;font-weight:500;position:relative}
+.pr-warncard::before,.pr-refusal::before,.pr-msg.bad::before{content:"!";position:absolute;left:14px;top:12px;width:20px;height:20px;border-radius:50%;background:var(--pr-red-ink);color:var(--pr-on-color);font-weight:700;font-size:12px;line-height:20px;text-align:center}
+.pr-tbl td.refused .pr-warncard{margin:2px 0}
+.pr-msg:empty{display:none}
+.pr-selftest .pr-bad{color:var(--pr-red-ink)}
+
+/* self-test card (hideable) */
+.pr-selftest-card{padding:12px 16px;margin-bottom:14px}
+.pr-selftest-card.bad{border-color:var(--pr-red-edge);background:var(--pr-red-row)}
+.pr-selftest-card.collapsed{padding:8px 16px}
+.pr-st-head{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--pr-ink-2)}
+.pr-st-head .pr-ok{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--pr-ok-bg);color:var(--pr-ok-ink);font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.08em}
+.pr-st-head .pr-bad{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--pr-card);color:var(--pr-red-ink);border:1px solid var(--pr-red-edge);font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.08em}
+.pr-st-head .pr-link{margin-left:auto}
+.pr-st-grid{display:flex;gap:28px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--pr-card-line)}
+.pr-st-i i{display:block;font-style:normal;font-family:var(--pr-mono);font-size:10px;letter-spacing:.12em;color:var(--pr-label)}
+.pr-st-i b{font-family:var(--pr-mono);font-weight:500;font-size:15px}
+
+/* self-test corner badge (hover / click = card) */
+.pr-stc{position:absolute;right:0;top:4px;z-index:20}
+.pr-stc-chip{width:30px;height:30px;border-radius:50%;border:1px solid var(--pr-ok-edge);background:var(--pr-ok-bg);color:var(--pr-ok-ink);font-size:14px;font-weight:700;cursor:pointer;line-height:1;padding:0}
+.pr-stc-pop{display:none;position:absolute;right:0;top:38px;width:min(560px,92vw);margin:0;box-shadow:var(--pr-pop-shadow)}
+.pr-stc:hover .pr-stc-pop,.pr-stc:focus-within .pr-stc-pop,.pr-stc.open .pr-stc-pop{display:block}
+.pr-stc-pop .pr-st-head{flex-wrap:wrap}
+
+/* ── redesign 2026-10-22: warnings are ORANGE, steps are GREEN ─────────── */
+.pr-warncard,.pr-refusal,.pr-msg.bad{background:var(--pr-warn-bg);border-color:var(--pr-warn-edge);color:var(--pr-warn-ink)}
+.pr-warncard::before,.pr-refusal::before,.pr-msg.bad::before{background:var(--pr-warn)}
+.pr-selftest-card.bad{background:var(--pr-warn-bg);border-color:var(--pr-warn-edge)}
+.pr-st-head .pr-bad{color:var(--pr-warn-ink);border-color:var(--pr-warn-edge)}
+.pr-tbl td.refused{color:var(--pr-warn-ink)}
+.pr-stp.on{color:var(--pr-green-ink)}
+.pr-stp.on i{background:var(--pr-green);border-color:var(--pr-green);color:var(--pr-on-color);box-shadow:0 0 0 3px var(--pr-green-halo)}
+
+/* employee form validation */
+.pr-invalid{border-color:var(--pr-warn)!important;box-shadow:0 0 0 3px var(--pr-warn-ring)}
+.pr-msg .pr-vlist{margin:6px 0 0;padding-left:18px;font-weight:400}
+.pr-msg .pr-vlist li{margin:2px 0}
+
+.pr-runhead .pr-top .pr-sec{margin-left:auto}
+.pr-runhead .pr-top .pr-sec ~ .pr-btn,.pr-runhead .pr-top .pr-sec ~ .pr-sec{margin-left:0}
+
+.pr-runhead .pr-top .pr-steps{flex:1 1 auto;width:auto;max-width:none;justify-content:center;margin:0 16px}
+.pr-runhead .pr-top .pr-steps .pr-ln{flex:0 0 36px}
+
+/* run header row 2: fixed positions — nothing moves when the month changes */
+.pr-runhead .pr-top{position:relative;min-height:46px}
+.pr-runhead .pr-top .pr-per{flex:0 0 200px;width:200px;justify-content:space-between}
+.pr-runhead .pr-top .pr-per b{flex:1;text-align:center;white-space:nowrap}
+.pr-runhead .pr-top .pr-steps{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);flex:none;margin:0;width:auto}
+
+/* run header row 2 sits in a card */
+.pr-runhead .pr-top{background:var(--pr-card);border:1px solid var(--pr-card-line);border-radius:var(--pr-card-radius);padding:10px 16px;min-height:64px;box-shadow:var(--pr-card-shadow,none)}
+.pr-runhead .pr-top .pr-per{background:var(--pr-field,transparent);box-shadow:none}
+
+/* Clients: search + filters row sits in a card */
+.pr-top.pr-listtop{background:var(--pr-card);border:1px solid var(--pr-card-line);border-radius:var(--pr-card-radius);padding:12px 16px;box-shadow:var(--pr-card-shadow);flex-wrap:wrap}
+
+/* Clients edit: one big card around Back, Save and the fields */
+.pr-bigcard{padding:18px 20px}
+.pr-bigcard > .pr-top{margin-bottom:12px}
+.pr-bigcard > .pr-msg{margin:0 0 12px}
+.pr-bigcard > .pr-msg:empty{display:none}
+.pr-bigcard .pr-grid{margin:0}
+.pr-bigcard .pr-lay1{margin:0}
+.pr-bigcard > .pr-msg.bad,.pr-bigcard > .pr-msg.ok{display:block}
+
+.pr-dh .st{flex-direction:column;align-items:flex-end;gap:10px}
+.pr-dh .st .chips,.pr-dh .st .act{display:flex;gap:8px;align-items:center}
+.pr-dh .st .act .pr-btn[hidden],.pr-dh .st .act .pr-btn2[hidden]{display:none}
+.pr-er .pr-go{padding:6px 12px;font-size:15px;line-height:1}
+
+.pr-top .act{margin-left:auto;display:flex;gap:8px;align-items:center}
+.pr-top .act .pr-btn[hidden],.pr-top .act .pr-btn2[hidden]{display:none}
+
+/* rows light up orange on hover as well as on click (Employees + Clients) */
+.pr-er:hover,.pr-er:focus-visible{background:var(--pr-red-row);border-color:var(--pr-red-edge);outline:none}
+.pr-er:hover .pr-av,.pr-er:focus-visible .pr-av{background:var(--pr-red);color:var(--pr-on-red)}
+
+/* client initials badge turns red with its row (hover, focus, clicked) */
+.pr-er:hover .pr-logo0,.pr-er:focus-visible .pr-logo0,.pr-er.on .pr-logo0{background:var(--pr-red);color:var(--pr-on-red)}
+
+/* Employees: search (smaller) + Add employee on one row */
+.pr-tbar{display:flex;align-items:center;gap:12px;margin:0 10px 10px}
+.pr-tbar .pr-srch{flex:1;max-width:420px;margin:0}
+.pr-tbar .pr-btn{margin:0;white-space:nowrap}
+.pr-tbar .pr-btn{margin-left:auto}
+
+/* Employees toolbar: one row (search · filters · Add) with a divider above the rows */
+.pr-tbar{flex-wrap:wrap;padding-bottom:14px;margin-bottom:10px;border-bottom:1px solid var(--pr-card-line)}
+.pr-tbar .pr-fbar{margin:0;padding:0;flex-wrap:nowrap}
+.pr-list .pr-tbar .pr-fbar{padding:0;margin:0}
+.pr-tbar .pr-srch{flex:0 1 300px}
+
+/* Clients toolbar: same as Employees — inside the card, one row, divider above the rows */
+.pr-list > .pr-top.pr-listtop{background:none;border:0;border-radius:0;box-shadow:none;padding:0 10px 14px;margin:0 0 10px;border-bottom:1px solid var(--pr-card-line);flex-wrap:nowrap}
+.pr-listtop .pr-srch{flex:0 1 300px}
+
+/* year-end PPh 21 working (run breakdown) and PPh 21 opening balances (employee) — PROTOTYPE 2026-10-23 */
+.pr-kv.pr-kvsub{font-size:12px;color:var(--pr-ink-2);padding-left:12px;border-top:0}
+.pr-kv.pr-kvsub b{font-weight:500;font-family:var(--pr-mono)}
+/* never wider than the card (operator 2026-10-28): the label wraps, the amount never does */
+.pr-kv span{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.pr-kv b{flex:0 0 auto;white-space:nowrap}
+.pr-kv.pr-kvsub span small{display:block;margin-top:2px}
+.pr-ob{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid var(--pr-rule);font-size:13px}
+.pr-ob:first-child{border-top:0}
+.pr-ob .nm{flex:1;min-width:0}
+.pr-ob .nm b{display:block;font-weight:600}
+.pr-ob .nm span{font-size:12px;color:var(--pr-ink-2)}
+.pr-ob .amts{display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:flex-end;font-family:var(--pr-mono);font-size:11.5px;color:var(--pr-ink-2)}
+.pr-ob .pr-g4{flex:1}
+.pr-ob .x{border:0;background:transparent;color:var(--pr-faint);cursor:pointer;font-size:14px;padding:0 2px}
+.pr-g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0 12px}
+.pr-obnone{font-size:12px;margin:0 0 6px}
+.pr-a1scan .pr-btn2{width:100%}
+.pr-a1msg{grid-column:1/-1;margin:0 0 6px}
+/* scan KTP / NPWP (docscan.js) — PROTOTYPE 2026-10-26 */
+.pr-scan{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin:0 0 12px}
+.pr-scanmsg{font-size:12px;color:var(--pr-ink-2)}
+.pr-scanmsg.bad{color:var(--pr-red-ink)}
+.pr-scanmsg.ok{color:var(--pr-green-ink)}
+.pr-sensitive{display:flex;align-items:stretch}
+.pr-sensitive input{min-width:0;flex:1;border-radius:8px 0 0 8px}
+.pr-eye{width:38px;border:1px solid var(--pr-field-line);border-left:0;border-radius:0 8px 8px 0;background:var(--pr-field);color:var(--pr-ink-2);cursor:pointer;font-size:15px}
+.pr-eye:hover,.pr-eye[aria-pressed="true"]{color:var(--pr-ink);background:var(--pr-card)}
+.pr-obbad{display:block;font-style:normal;font-size:12px;color:var(--pr-red-ink);margin-top:2px}
+
+/* ── the send DRAFT (outputs.js draftBox, 2026-10-26) — tokens only ───── */
+.pr-modal.pr-draft{max-width:620px}
+.pr-draft-body{display:block;width:100%;height:170px;border:1px solid var(--pr-field-line);border-radius:10px;background:var(--pr-card);margin:0 0 12px;box-sizing:border-box}
+.pr-draft-att{margin:0 0 12px;border:1px solid var(--pr-field-line);border-radius:10px;padding:2px 12px;background:var(--pr-field);max-height:200px;overflow:auto}
+.pr-draft-att div{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--pr-rule);font-family:var(--pr-mono);font-size:12px}
+.pr-draft-att div:last-child{border-bottom:0}
+.pr-draft-att span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-draft-att i{font-style:normal;color:var(--pr-label);font-size:11px}
+
+
+/* BPJS this month — the ticks in Payroll run → Variable (071, 2026-10-28). Sizes only. */
+.pr-bpick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 0 4px;border-top:1px solid var(--pr-rule);margin-top:10px}
+.pr-bpick-h{flex:0 0 100%;font-family:var(--pr-mono);font-size:10px;letter-spacing:.1em;color:var(--pr-label);text-transform:uppercase}
+.pr-bpick label{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer}
+.pr-bpick input{margin:0}
+
+/* Employees list: status, pay basis and contract under the name (2026-10-28). Sizes only. */
+.pr-er > div:not(.r){min-width:0;flex:1 1 auto}
+.pr-er > div:not(.r) > span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-ertags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.pr-er .pr-ertags .pr-chip{font-size:9.5px;padding:2px 7px;letter-spacing:.05em}
+.pr-er .r{flex:0 0 auto}
+
+/* date field: DD/MM/YYYY text box + native type=date picker behind a button */
+.pr-datebox{position:relative;display:flex;align-items:center}
+.pr-datebox input.pr-mono{padding-right:34px}
+.pr-datebtn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--pr-label);cursor:pointer;font-size:14px;padding:2px 4px}
+.pr-f input.pr-datepick{position:absolute;right:6px;bottom:0;width:1px;height:1px;opacity:0;padding:0;border:0;pointer-events:none}
+
+/* run header: cut-off text + editable pay date (draft only) */
+.pr-hdates{display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+.pr-hdate{position:relative;display:inline-flex;align-items:center;gap:8px}
+.pr-hdate label{font-family:var(--pr-mono);font-size:10px;letter-spacing:.12em;color:var(--pr-label);margin:0}
+.pr-hdate input.pr-mono{width:118px;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:8px;padding:6px 28px 6px 9px;font-size:12px;color:var(--pr-ink)}
+.pr-hdate .pr-datebtn{right:auto;left:auto;position:relative;transform:none;margin-left:-30px}
+.pr-hdate .pr-datepick{position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;padding:0;border:0;pointer-events:none}
+.pr-hnote{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-faint)}
+
+.pr-admintag{color:var(--pr-red);letter-spacing:.08em}
+
+/* destructive actions: Reset run, Delete employee (admin) */
+.pr-danger{color:var(--pr-red)!important;border-color:var(--pr-red)!important}
+.pr-modal-type{margin:0 0 18px}
+.pr-modal-type label{display:block;font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.08em;color:var(--pr-label);margin-bottom:6px}
+.pr-modal-type input{width:100%;background:var(--pr-field);border:1px solid var(--pr-field-line);border-radius:8px;padding:9px 11px;font-size:13px;color:var(--pr-ink)}
+
+/* Reset run: round icon, left of the calc self-test chip (admin, Inputs only) */
+.pr-rstc{position:absolute;right:38px;top:4px;z-index:20;width:30px;height:30px;border-radius:50%;border:1px solid var(--pr-red-edge);background:var(--pr-red-row);color:var(--pr-red-ink);font-size:16px;line-height:1;cursor:pointer;padding:0}
+.pr-rstc.solo{right:0}
+.pr-rstc:hover{background:var(--pr-red);color:var(--pr-on-red)}
+.pr-rstc[disabled]{opacity:.5;cursor:default}
+
+.pr-lg i small{display:block;margin-top:2px;font-size:10px;letter-spacing:.06em;color:var(--pr-faint)}
+
+/* ── THE MONTH'S RUNS + Start run menu (operator 2026-10-29) ───────────────
+   Tokens only (§4). The type chips are the existing chip shapes; Regular is
+   neutral, THR is the amber "look at this" colour, Bonus the ink chip. */
+.gki-app.pr .pr-top{position:relative}
+.gki-app.pr .pr-sec + .pr-sec{margin-left:10px}
+.gki-app.pr .pr-startmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;width:320px;background:var(--pr-card);
+  border:1px solid var(--pr-card-line);border-radius:12px;box-shadow:var(--pr-modal-shadow);padding:6px;display:flex;flex-direction:column;gap:2px}
+.gki-app.pr .pr-sm-i{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:8px;color:var(--pr-ink)}
+.gki-app.pr .pr-sm-i b{font-family:var(--pr-sans);font-size:13.5px;font-weight:600}
+.gki-app.pr .pr-sm-i small{font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.02em;color:var(--pr-label)}
+.gki-app.pr .pr-sm-i:hover:not(:disabled),.gki-app.pr .pr-sm-i:focus-visible{background:var(--pr-field)}
+.gki-app.pr .pr-sm-i:disabled{cursor:default;opacity:.55}
+.gki-app.pr .pr-rrow{all:unset;box-sizing:border-box;display:grid;grid-template-columns:96px 1fr auto;align-items:center;gap:14px;width:100%;
+  padding:14px 4px;border-top:1px solid var(--pr-rule);cursor:pointer;color:var(--pr-ink)}
+.gki-app.pr .pr-rrow:hover,.gki-app.pr .pr-rrow:focus-visible{background:var(--pr-field)}
+.gki-app.pr .pr-rtype{font-family:var(--pr-mono);font-size:10.5px;letter-spacing:.08em;text-align:center;padding:5px 8px;border-radius:999px;
+  background:var(--pr-field);color:var(--pr-ink-2);border:1px solid var(--pr-field-line)}
+.gki-app.pr .pr-rtype.thr{background:var(--pr-amber-soft);color:var(--pr-amber);border-color:var(--pr-amber-edge)}
+.gki-app.pr .pr-rtype.bonus{background:var(--pr-ink);color:var(--pr-on-red);border-color:var(--pr-ink)}
+.gki-app.pr .pr-rmid{display:flex;flex-direction:column;gap:3px}
+.gki-app.pr .pr-rmid b{font-family:var(--pr-mono);font-size:12px;letter-spacing:.08em}
+.gki-app.pr .pr-rmid small{font-family:var(--pr-mono);font-size:10.5px;color:var(--pr-label)}
+.gki-app.pr .pr-ropen{font-family:var(--pr-mono);font-size:11px;color:var(--pr-ink-2);padding-right:6px}
+.gki-app.pr .pr-thrnote{font-size:11.5px;line-height:1.5;margin:10px 0}
+
+/* ── LEFT SIDEBAR NAV (2026-11-02) ─────────────────────────────────────────
+   The screen tabs moved out of the banner into a left rail. Same navy as the
+   banner, same uppercase tab type, active cell still in --gki-module (red).
+   Kit tokens only (--gki-*), so the theme is unchanged.                      */
+.gki-app.pr .pr-rail{flex:none;width:208px;background:var(--gki-navy);display:flex;flex-direction:column;
+  padding:14px 0;border-right:1px solid rgba(255,255,255,.08);overflow-y:auto}
+.gki-app.pr .pr-sidenav{flex-direction:column;align-items:stretch;gap:2px}
+.gki-app.pr .pr-sidenav a{min-height:44px;padding:0 20px;border-bottom:0;border-left:3px solid transparent}
+.gki-app.pr .pr-sidenav a[aria-current="page"]{border-left-color:var(--gki-module)}
+.gki-app.pr .pr-sidenav a:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+/* Narrow screens: the rail folds back into a strip above the pane. */
+@media (max-width:760px){
+  .gki-app.pr .gki-body{flex-direction:column}
+  .gki-app.pr .pr-rail{width:auto;padding:0;border-right:0;overflow-x:auto}
+  .gki-app.pr .pr-sidenav{flex-direction:row}
+  .gki-app.pr .pr-sidenav a{border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .gki-app.pr .pr-sidenav a[aria-current="page"]{border-bottom-color:var(--gki-module)}
+}
+@media print{ .gki-app.pr .pr-rail{display:none} }

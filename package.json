@@ -1,0 +1,19 @@
+{
+  "name": "corabyte-payroll",
+  "version": "0.3.0",
+  "description": "CoraByte Payroll — standalone payroll app (PPh 21 TER, BPJS, payslips, Mandiri bank file) on Node.js and SQLite.",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/*.test.js\"",
+    "seed:demo": "node --disable-warning=ExperimentalWarning scripts/seed-demo.js",
+    "user:create": "node --disable-warning=ExperimentalWarning scripts/create-user.js",
+    "db:backup": "node --disable-warning=ExperimentalWarning scripts/backup-db.js"
+  }
+}

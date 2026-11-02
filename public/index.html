@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoraByte Payroll</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/ui-kit.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+  <!-- Core: config, data access, shared dropdown, app shell -->
+  <script src="/js/core/config.js"></script>
+  <script src="/js/core/store.js"></script>
+  <script src="/js/core/combo.js"></script>
+  <script src="/js/core/spine.js"></script>
+
+  <!-- Documents: payslip, PDF export, bank file -->
+  <script src="/js/lib/payslip.js"></script>
+  <script src="/js/lib/pdfdoc.js"></script>
+  <script src="/js/lib/mandiri.js"></script>
+
+  <!-- Screens (outputs.js before run.js, which hands a locked run to it) -->
+  <script src="/js/screens/home.js"></script>
+  <script src="/js/screens/employees.js"></script>
+  <script src="/js/screens/outputs.js"></script>
+  <script src="/js/screens/run.js"></script>
+  <script src="/js/screens/users.js"></script>
+  <script src="/js/screens/settings.js"></script>
+</body>
+</html>

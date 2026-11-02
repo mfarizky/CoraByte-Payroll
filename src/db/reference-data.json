@@ -1,0 +1,1233 @@
+{
+ "bpjs_rates": [
+  {
+   "programme": "jht",
+   "side": "employer",
+   "rate": "0.037000",
+   "wage_cap": null,
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "programme": "jht",
+   "side": "employee",
+   "rate": "0.020000",
+   "wage_cap": null,
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "programme": "jkm",
+   "side": "employer",
+   "rate": "0.003000",
+   "wage_cap": null,
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "programme": "kesehatan",
+   "side": "employer",
+   "rate": "0.040000",
+   "wage_cap": "12000000.00",
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2020-01-01",
+   "effective_to": null
+  },
+  {
+   "programme": "kesehatan",
+   "side": "employee",
+   "rate": "0.010000",
+   "wage_cap": "12000000.00",
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2020-01-01",
+   "effective_to": null
+  },
+  {
+   "programme": "jp",
+   "side": "employer",
+   "rate": "0.020000",
+   "wage_cap": "11086300.00",
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2026-03-01",
+   "effective_to": null
+  },
+  {
+   "programme": "jp",
+   "side": "employee",
+   "rate": "0.010000",
+   "wage_cap": "11086300.00",
+   "wage_floor_kind": "minimum_wage",
+   "effective_from": "2026-03-01",
+   "effective_to": null
+  }
+ ],
+ "jkk_classes": [
+  {
+   "class_code": "I",
+   "rate": "0.002400",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "class_code": "II",
+   "rate": "0.005400",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "class_code": "III",
+   "rate": "0.008900",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "class_code": "IV",
+   "rate": "0.012700",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  },
+  {
+   "class_code": "V",
+   "rate": "0.017400",
+   "effective_from": "2015-07-01",
+   "effective_to": null
+  }
+ ],
+ "minimum_wage": [
+  {
+   "region": "UMP_NTB",
+   "amount": "2602931.00",
+   "effective_from": "2025-01-01",
+   "effective_to": "2025-12-31"
+  },
+  {
+   "region": "UMP_NTB",
+   "amount": "2673861.00",
+   "effective_from": "2026-01-01",
+   "effective_to": null
+  }
+ ],
+ "ptkp": [
+  {
+   "ptkp_status": "TK/0",
+   "annual_amount": "54000000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "TK/1",
+   "annual_amount": "58500000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "TK/2",
+   "annual_amount": "63000000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "TK/3",
+   "annual_amount": "67500000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "K/0",
+   "annual_amount": "58500000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "K/1",
+   "annual_amount": "63000000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "K/2",
+   "annual_amount": "67500000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  },
+  {
+   "ptkp_status": "K/3",
+   "annual_amount": "72000000.00",
+   "effective_from": "2016-01-01",
+   "effective_to": null
+  }
+ ],
+ "ter_rates": [
+  {
+   "category": "A",
+   "lower_bound": "0.00",
+   "upper_bound": "5400000.00",
+   "rate": "0.000000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "5400000.01",
+   "upper_bound": "5650000.00",
+   "rate": "0.002500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "5650000.01",
+   "upper_bound": "5950000.00",
+   "rate": "0.005000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "5950000.01",
+   "upper_bound": "6300000.00",
+   "rate": "0.007500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "6300000.01",
+   "upper_bound": "6750000.00",
+   "rate": "0.010000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "6750000.01",
+   "upper_bound": "7500000.00",
+   "rate": "0.012500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "7500000.01",
+   "upper_bound": "8550000.00",
+   "rate": "0.015000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "8550000.01",
+   "upper_bound": "9650000.00",
+   "rate": "0.017500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "9650000.01",
+   "upper_bound": "10050000.00",
+   "rate": "0.020000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "10050000.01",
+   "upper_bound": "10350000.00",
+   "rate": "0.022500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "10350000.01",
+   "upper_bound": "10700000.00",
+   "rate": "0.025000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "10700000.01",
+   "upper_bound": "11050000.00",
+   "rate": "0.030000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "11050000.01",
+   "upper_bound": "11600000.00",
+   "rate": "0.035000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "11600000.01",
+   "upper_bound": "12500000.00",
+   "rate": "0.040000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "12500000.01",
+   "upper_bound": "13750000.00",
+   "rate": "0.050000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "13750000.01",
+   "upper_bound": "15100000.00",
+   "rate": "0.060000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "15100000.01",
+   "upper_bound": "16950000.00",
+   "rate": "0.070000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "16950000.01",
+   "upper_bound": "19750000.00",
+   "rate": "0.080000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "19750000.01",
+   "upper_bound": "24150000.00",
+   "rate": "0.090000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "24150000.01",
+   "upper_bound": "26450000.00",
+   "rate": "0.100000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "26450000.01",
+   "upper_bound": "28000000.00",
+   "rate": "0.110000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "28000000.01",
+   "upper_bound": "30050000.00",
+   "rate": "0.120000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "30050000.01",
+   "upper_bound": "32400000.00",
+   "rate": "0.130000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "32400000.01",
+   "upper_bound": "35400000.00",
+   "rate": "0.140000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "35400000.01",
+   "upper_bound": "39100000.00",
+   "rate": "0.150000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "39100000.01",
+   "upper_bound": "43850000.00",
+   "rate": "0.160000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "43850000.01",
+   "upper_bound": "47800000.00",
+   "rate": "0.170000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "47800000.01",
+   "upper_bound": "51400000.00",
+   "rate": "0.180000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "51400000.01",
+   "upper_bound": "56300000.00",
+   "rate": "0.190000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "56300000.01",
+   "upper_bound": "62200000.00",
+   "rate": "0.200000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "62200000.01",
+   "upper_bound": "68600000.00",
+   "rate": "0.210000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "68600000.01",
+   "upper_bound": "77500000.00",
+   "rate": "0.220000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "77500000.01",
+   "upper_bound": "89000000.00",
+   "rate": "0.230000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "89000000.01",
+   "upper_bound": "103000000.00",
+   "rate": "0.240000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "103000000.01",
+   "upper_bound": "125000000.00",
+   "rate": "0.250000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "125000000.01",
+   "upper_bound": "157000000.00",
+   "rate": "0.260000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "157000000.01",
+   "upper_bound": "206000000.00",
+   "rate": "0.270000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "206000000.01",
+   "upper_bound": "337000000.00",
+   "rate": "0.280000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "337000000.01",
+   "upper_bound": "454000000.00",
+   "rate": "0.290000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "454000000.01",
+   "upper_bound": "550000000.00",
+   "rate": "0.300000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "550000000.01",
+   "upper_bound": "695000000.00",
+   "rate": "0.310000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "695000000.01",
+   "upper_bound": "910000000.00",
+   "rate": "0.320000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "910000000.01",
+   "upper_bound": "1400000000.00",
+   "rate": "0.330000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "0.00",
+   "upper_bound": "6200000.00",
+   "rate": "0.000000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "6200000.01",
+   "upper_bound": "6500000.00",
+   "rate": "0.002500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "6500000.01",
+   "upper_bound": "6850000.00",
+   "rate": "0.005000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "6850000.01",
+   "upper_bound": "7300000.00",
+   "rate": "0.007500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "7300000.01",
+   "upper_bound": "9200000.00",
+   "rate": "0.010000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "9200000.01",
+   "upper_bound": "10750000.00",
+   "rate": "0.015000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "10750000.01",
+   "upper_bound": "11250000.00",
+   "rate": "0.020000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "11250000.01",
+   "upper_bound": "11600000.00",
+   "rate": "0.025000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "11600000.01",
+   "upper_bound": "12600000.00",
+   "rate": "0.030000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "12600000.01",
+   "upper_bound": "13600000.00",
+   "rate": "0.040000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "13600000.01",
+   "upper_bound": "14950000.00",
+   "rate": "0.050000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "14950000.01",
+   "upper_bound": "16400000.00",
+   "rate": "0.060000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "16400000.01",
+   "upper_bound": "18450000.00",
+   "rate": "0.070000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "18450000.01",
+   "upper_bound": "21850000.00",
+   "rate": "0.080000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "21850000.01",
+   "upper_bound": "26000000.00",
+   "rate": "0.090000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "26000000.01",
+   "upper_bound": "27700000.00",
+   "rate": "0.100000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "27700000.01",
+   "upper_bound": "29350000.00",
+   "rate": "0.110000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "29350000.01",
+   "upper_bound": "31450000.00",
+   "rate": "0.120000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "31450000.01",
+   "upper_bound": "33950000.00",
+   "rate": "0.130000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "33950000.01",
+   "upper_bound": "37100000.00",
+   "rate": "0.140000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "37100000.01",
+   "upper_bound": "41100000.00",
+   "rate": "0.150000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "41100000.01",
+   "upper_bound": "45800000.00",
+   "rate": "0.160000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "45800000.01",
+   "upper_bound": "49500000.00",
+   "rate": "0.170000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "49500000.01",
+   "upper_bound": "53800000.00",
+   "rate": "0.180000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "53800000.01",
+   "upper_bound": "58500000.00",
+   "rate": "0.190000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "58500000.01",
+   "upper_bound": "64000000.00",
+   "rate": "0.200000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "64000000.01",
+   "upper_bound": "71000000.00",
+   "rate": "0.210000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "71000000.01",
+   "upper_bound": "80000000.00",
+   "rate": "0.220000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "80000000.01",
+   "upper_bound": "93000000.00",
+   "rate": "0.230000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "93000000.01",
+   "upper_bound": "109000000.00",
+   "rate": "0.240000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "109000000.01",
+   "upper_bound": "129000000.00",
+   "rate": "0.250000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "129000000.01",
+   "upper_bound": "163000000.00",
+   "rate": "0.260000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "163000000.01",
+   "upper_bound": "211000000.00",
+   "rate": "0.270000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "211000000.01",
+   "upper_bound": "374000000.00",
+   "rate": "0.280000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "374000000.01",
+   "upper_bound": "459000000.00",
+   "rate": "0.290000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "459000000.01",
+   "upper_bound": "555000000.00",
+   "rate": "0.300000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "555000000.01",
+   "upper_bound": "704000000.00",
+   "rate": "0.310000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "704000000.01",
+   "upper_bound": "957000000.00",
+   "rate": "0.320000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "957000000.01",
+   "upper_bound": "1405000000.00",
+   "rate": "0.330000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "0.00",
+   "upper_bound": "6600000.00",
+   "rate": "0.000000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "6600000.01",
+   "upper_bound": "6950000.00",
+   "rate": "0.002500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "6950000.01",
+   "upper_bound": "7350000.00",
+   "rate": "0.005000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "7350000.01",
+   "upper_bound": "7800000.00",
+   "rate": "0.007500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "7800000.01",
+   "upper_bound": "8850000.00",
+   "rate": "0.010000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "8850000.01",
+   "upper_bound": "9800000.00",
+   "rate": "0.012500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "9800000.01",
+   "upper_bound": "10950000.00",
+   "rate": "0.015000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "10950000.01",
+   "upper_bound": "11200000.00",
+   "rate": "0.017500",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "11200000.01",
+   "upper_bound": "12050000.00",
+   "rate": "0.020000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "12050000.01",
+   "upper_bound": "12950000.00",
+   "rate": "0.030000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "12950000.01",
+   "upper_bound": "14150000.00",
+   "rate": "0.040000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "14150000.01",
+   "upper_bound": "15550000.00",
+   "rate": "0.050000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "15550000.01",
+   "upper_bound": "17050000.00",
+   "rate": "0.060000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "17050000.01",
+   "upper_bound": "19500000.00",
+   "rate": "0.070000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "19500000.01",
+   "upper_bound": "22700000.00",
+   "rate": "0.080000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "22700000.01",
+   "upper_bound": "26600000.00",
+   "rate": "0.090000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "26600000.01",
+   "upper_bound": "28100000.00",
+   "rate": "0.100000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "28100000.01",
+   "upper_bound": "30100000.00",
+   "rate": "0.110000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "30100000.01",
+   "upper_bound": "32600000.00",
+   "rate": "0.120000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "32600000.01",
+   "upper_bound": "35400000.00",
+   "rate": "0.130000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "35400000.01",
+   "upper_bound": "38900000.00",
+   "rate": "0.140000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "38900000.01",
+   "upper_bound": "43000000.00",
+   "rate": "0.150000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "43000000.01",
+   "upper_bound": "47400000.00",
+   "rate": "0.160000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "47400000.01",
+   "upper_bound": "51200000.00",
+   "rate": "0.170000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "51200000.01",
+   "upper_bound": "55800000.00",
+   "rate": "0.180000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "55800000.01",
+   "upper_bound": "60400000.00",
+   "rate": "0.190000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "60400000.01",
+   "upper_bound": "66700000.00",
+   "rate": "0.200000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "66700000.01",
+   "upper_bound": "74500000.00",
+   "rate": "0.210000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "74500000.01",
+   "upper_bound": "83200000.00",
+   "rate": "0.220000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "83200000.01",
+   "upper_bound": "95600000.00",
+   "rate": "0.230000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "95600000.01",
+   "upper_bound": "110000000.00",
+   "rate": "0.240000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "110000000.01",
+   "upper_bound": "134000000.00",
+   "rate": "0.250000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "134000000.01",
+   "upper_bound": "169000000.00",
+   "rate": "0.260000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "169000000.01",
+   "upper_bound": "221000000.00",
+   "rate": "0.270000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "221000000.01",
+   "upper_bound": "390000000.00",
+   "rate": "0.280000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "390000000.01",
+   "upper_bound": "463000000.00",
+   "rate": "0.290000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "463000000.01",
+   "upper_bound": "561000000.00",
+   "rate": "0.300000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "561000000.01",
+   "upper_bound": "709000000.00",
+   "rate": "0.310000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "709000000.01",
+   "upper_bound": "965000000.00",
+   "rate": "0.320000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "965000000.01",
+   "upper_bound": "1419000000.00",
+   "rate": "0.330000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "A",
+   "lower_bound": "1400000000.01",
+   "upper_bound": null,
+   "rate": "0.340000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "B",
+   "lower_bound": "1405000000.01",
+   "upper_bound": null,
+   "rate": "0.340000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "category": "C",
+   "lower_bound": "1419000000.01",
+   "upper_bound": null,
+   "rate": "0.340000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  }
+ ],
+ "pph21_brackets": [
+  {
+   "layer": 1,
+   "lower_bound": "0.00",
+   "upper_bound": "60000000.00",
+   "rate": "0.050000",
+   "effective_from": "2022-01-01",
+   "effective_to": null
+  },
+  {
+   "layer": 2,
+   "lower_bound": "60000000.01",
+   "upper_bound": "250000000.00",
+   "rate": "0.150000",
+   "effective_from": "2022-01-01",
+   "effective_to": null
+  },
+  {
+   "layer": 3,
+   "lower_bound": "250000000.01",
+   "upper_bound": "500000000.00",
+   "rate": "0.250000",
+   "effective_from": "2022-01-01",
+   "effective_to": null
+  },
+  {
+   "layer": 4,
+   "lower_bound": "500000000.01",
+   "upper_bound": "5000000000.00",
+   "rate": "0.300000",
+   "effective_from": "2022-01-01",
+   "effective_to": null
+  },
+  {
+   "layer": 5,
+   "lower_bound": "5000000000.01",
+   "upper_bound": null,
+   "rate": "0.350000",
+   "effective_from": "2022-01-01",
+   "effective_to": null
+  }
+ ],
+ "ter_daily": [
+  {
+   "lower_bound": "0.00",
+   "upper_bound": "450000.00",
+   "method": "ter",
+   "rate": "0.000000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "lower_bound": "450000.01",
+   "upper_bound": "2500000.00",
+   "method": "ter",
+   "rate": "0.005000",
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  },
+  {
+   "lower_bound": "2500000.01",
+   "upper_bound": null,
+   "method": "pasal17_half",
+   "rate": null,
+   "effective_from": "2024-01-01",
+   "effective_to": null
+  }
+ ]
+}

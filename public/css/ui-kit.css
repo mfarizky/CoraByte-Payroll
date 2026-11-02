@@ -1,0 +1,531 @@
+/* ============================================================================
+   CoraByte Payroll — ui-kit.css: base layout primitives (.gki-app frame,
+   body/pane, navigation, status bar, alerts, density tokens). app.css and
+   theme.css build on it.
+   ========================================================================== */
+/* ── 0. PAGE FRAME — v1.8.4 (SAM 2026-10-18) ───────────────────────────────
+   The browser's default 8px body margin showed as a white frame round the
+   banner (IMMIGRATION). Geometry only; apps that already reset it lose nothing. */
+html,body{margin:0; padding:0}
+
+/* ── 1. TOKENS ─────────────────────────────────────────────────────────────
+   Modules read these, never literals. The ONLY per-app value is --gki-module,
+   set by config.js from BRANDING.accent; it colours the module chip and
+   nothing else.                                                             */
+:root{
+  /* brand — the ONLY hues in this interface. Every one is a GKI app colour.
+     Steps (-dark / -bg) are lighter or darker versions of the same hue, used
+     where contrast demands it; no new hue is ever introduced.               */
+  --gki-navy:#10153B;          /* GKI blue — logo, chrome, primary, focus    */
+  --gki-navy-2:#232B57;        /* active nav cell, primary hover             */
+  --gki-navy-3:#1A2149;        /* inset field on navy                        */
+  --gki-navy-bg:#E8EAF2;       /* selected row, info tint                    */
+
+  --gki-teal:#12403C;          /* GKI FINANCE green — complete, issued, online   */
+  --gki-teal-bg:#E5EDEF;
+
+  --gki-slate:#819EA8;         /* GKI SERVICES blue-grey — in progress, draft */
+  --gki-slate-dark:#4E6A73;    /* same hue, dark step: text on light         */
+  --gki-slate-bg:#EEF2F3;
+
+  --gki-red:#FF4040;           /* GKI PEOPLE red — blocked, error, destructive */
+  --gki-red-dark:#A82A2A;      /* same hue, dark step: text on light         */
+  --gki-red-bg:#FFECEC;
+
+  /* neutrals — desaturated navy, not grey */
+  --gki-ground:#E9ECF3;        /* app background behind panes                */
+  --gki-surface:#FFFFFF;       /* panels, inputs, table body                 */
+  --gki-alt:#F4F6FA;           /* block headers, table head, inset strips    */
+  --gki-line:#D3D8E6;          /* hairline inside a panel                    */
+  --gki-line-2:#B9C0D4;        /* panel edge, control edge                   */
+  --gki-line-3:#8A93AE;        /* table head underline, heavy divider        */
+
+  /* text */
+  --gki-ink:#11142C;           /* primary                                    */
+  --gki-ink-2:#3D4360;         /* secondary / control labels                 */
+  --gki-muted:#666D88;         /* captions, help, placeholders               */
+  --gki-on-navy:#B9C1E0;       /* text on the navy bars                      */
+  --gki-on-navy-dim:#5F6892;   /* disabled text on navy                      */
+
+  /* semantic — aliases onto the brand hues above. No hue of their own.      */
+  --gki-good:var(--gki-teal);        --gki-good-bg:var(--gki-teal-bg);
+  --gki-progress:var(--gki-slate-dark); --gki-progress-bg:var(--gki-slate-bg);
+  --gki-crit:var(--gki-red-dark);    --gki-crit-bg:var(--gki-red-bg);
+  --gki-focus:var(--gki-navy);       /* focus ring on light surfaces         */
+
+  /* module identity — set per app in config.js from BRANDING.accent.
+     From the official GKI palette (SAM, 2026-09-15). ⚠️ v1.2-v1.6 carried
+     FINANCE as #004953, sampled from the logo PNG rather than taken from the
+     palette — that was wrong and is corrected here. Sample a rendered image
+     and you get whatever antialiasing gives you; the palette is the source.
+       GKI (CORE)    #10153B   navy
+       LEGAL         #651C32   maroon
+       FINANCE       #12403C   green
+       REAL ESTATE   #6B5216   olive
+       SERVICES      #819EA8   blue-grey
+       PEOPLE        #FF4040   red
+       ASSIST        #4A4F4F   grey-green   (no app yet)
+       TECHNOLOGY    #8F00FF   violet       (no app yet — see the DEV clash below)
+     #8F00FF was also the old DEV accent. Resolved 2026-09-14: DEV is no longer a
+     colour — see the DEV MARKER section. A DEV build keeps its app's own colour. */
+  --gki-module:#10153B;
+
+  /* type */
+  --gki-font:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --gki-mono:"IBM Plex Mono",ui-monospace,Consolas,"Courier New",monospace;
+  --gki-fs-micro:10px;   /* mono section labels, uppercase, .14em           */
+  --gki-fs-label:11px;   /* field labels, uppercase, .03em                  */
+  --gki-fs-sm:12px;      /* secondary UI, nav, chips                        */
+  --gki-fs:13px;         /* base — controls, table body                     */
+  --gki-fs-lg:15px;      /* record title                                    */
+
+  /* metrics — the four tokens that change density */
+  --gki-row:31px;        /* table row                                       */
+  --gki-ctrl:30px;       /* input / select height                           */
+  --gki-btn:26px;        /* button height                                   */
+  --gki-pad:14px;        /* pane + block padding                            */
+  --gki-gap:12px;        /* gap between blocks                              */
+
+  /* bars */
+  --gki-bar-global:48px; --gki-bar-sub:33px; --gki-bar-cmd:40px;
+  --gki-bar-tool:38px;   --gki-bar-status:30px; --gki-step:38px;
+  --gki-step-pad:16px;   /* stepper cell padding — density shrinks this      */
+  --gki-step-fs:var(--gki-fs-sm);
+  --gki-step-min:104px;  /* FLOOR: a cell never shrinks below this. Past the
+                            floor the bar overflows and scrolls, which is the
+                            correct behaviour for a 15-section wizard.        */
+}
+
+/* Comfortable: for modules whose forms are long and sparsely filled.
+   Compact: for register-heavy screens. Set on the app root. */
+.gki-density-comfortable{--gki-row:36px;--gki-ctrl:34px;--gki-btn:28px;--gki-pad:18px;--gki-gap:14px;--gki-step-pad:18px}
+.gki-density-compact{--gki-row:27px;--gki-ctrl:26px;--gki-btn:24px;--gki-pad:10px;--gki-gap:9px;--gki-fs:12.5px;
+  --gki-step-pad:10px;--gki-step-fs:11.5px}
+
+/* ── 2. APP FRAME ───────────────────────────────────────────────────────── */
+.gki-app,.gki-app *{box-sizing:border-box}
+.gki-app{
+  font-family:var(--gki-font); font-size:var(--gki-fs); color:var(--gki-ink);
+  background:var(--gki-ground); height:100vh; display:flex; flex-direction:column;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+.gki-body{flex:1; display:flex; min-height:0}
+.gki-pane{flex:1; min-width:0; padding:var(--gki-pad); overflow:auto}
+
+/* ── 3. GLOBAL BAR — modules ────────────────────────────────────────────── */
+.gki-gbar{height:var(--gki-bar-global); flex:none; background:var(--gki-navy); display:flex; align-items:stretch}
+/* The mark is the official GKI logo — always WHITE letters on a brand colour,
+   never inverted. The tile takes --gki-module, so the logo IS the app you are
+   in: navy in Legal, red in People, petrol in Finance. A hairline keeps it
+   legible when the app colour equals the bar colour. */
+.gki-gmark{flex:none; background:var(--gki-navy); color:#fff; display:flex; align-items:center;
+  gap:9px; padding:0 18px; border-right:1px solid rgba(255,255,255,.16)}
+.gki-gmark b{font-weight:700; font-size:22px; letter-spacing:.01em; line-height:1; display:block}
+.gki-gmark span{font-size:21px; font-weight:400; letter-spacing:.02em; opacity:.95;
+  line-height:1; display:block}
+.gki-gmark img{height:40px; width:auto; display:block}
+.gki-gnav{display:flex; align-items:stretch}
+.gki-gnav a{display:flex; align-items:center; padding:0 15px; font-size:12.5px; color:var(--gki-on-navy);
+  text-decoration:none; border-bottom:3px solid transparent;
+  text-transform:uppercase; letter-spacing:.07em}
+.gki-gnav a:hover{color:#fff; background:rgba(255,255,255,.06)}
+/* The active module cell carries the app colour; the GKI CORE mark stays navy. */
+.gki-gnav a[aria-current="page"]{color:#fff; font-weight:600; background:var(--gki-module);
+  border-bottom-color:var(--gki-module)}
+.gki-gnav a[aria-disabled="true"]{color:var(--gki-on-navy-dim); pointer-events:none}
+/* Separates the built modules from the ones that are only on the roadmap —
+   same hairline as the one after the wordmark. */
+.gki-gnav a.gki-gnav-cut{border-left:1px solid rgba(255,255,255,.16)}
+.gki-gright{margin-left:auto; display:flex; align-items:center}
+.gki-gsearch{width:280px; height:26px; border:1px solid #3A4272; background:var(--gki-navy-3);
+  color:#9AA3C8; display:flex; align-items:center; padding:0 9px; font-size:var(--gki-fs-sm); gap:7px}
+.gki-gbtn{width:40px; height:100%; display:grid; place-items:center; color:#9AA3C8; border-left:1px solid #262E5C}
+
+/* ⚠️ RETIRED 2026-09-15 (SAM). The global-bar search box and the two icons to
+   the left of the avatar were decoration — neither did anything. Hidden here,
+   in the kit, so an app that still emits the markup stops showing them the
+   moment it takes v1.6; each app then deletes the markup at its next pass.
+   The rules above are kept so nothing that references them breaks. */
+.gki-gsearch,.gki-gbtn{display:none}
+
+/* The avatar is a SQUARE (v1.6). v1.5 set width to the bar height and height
+   to 100%, but .gki-gright is a centred flex row, so `height:100%` had no
+   definite height to resolve against and collapsed to the text — measured
+   48 x 12, a flat white slab against the right edge. Fixed with explicit
+   dimensions and self-alignment, which do not depend on the parent. */
+.gki-gavatar{flex:none; width:32px; height:32px; align-self:center; margin:0 14px;
+  background:#fff; color:var(--gki-navy); display:grid; place-items:center;
+  font-family:var(--gki-mono); font-size:12px; font-weight:500; letter-spacing:.04em}
+
+/* ── 4. SUB BAR — templates within a module ─────────────────────────────── */
+.gki-subbar{height:var(--gki-bar-sub); flex:none; background:var(--gki-surface);
+  border-bottom:1px solid var(--gki-line-2); display:flex; align-items:stretch; padding-left:var(--gki-pad)}
+.gki-subbar a{display:flex; align-items:center; padding:0 13px; font-size:11.5px;
+  color:var(--gki-ink-2); text-decoration:none; border-bottom:2px solid transparent;
+  text-transform:uppercase; letter-spacing:.06em}
+.gki-subbar a:hover{background:var(--gki-alt)}
+.gki-subbar a[aria-current="page"]{color:var(--gki-navy); font-weight:600; background:var(--gki-alt);
+  border-bottom-color:var(--gki-module)}
+.gki-subbar-right{margin-left:auto; display:flex; align-items:center; gap:14px;
+  padding-right:var(--gki-pad); font-size:var(--gki-fs-label); color:var(--gki-muted)}
+
+/* ── 5. COMMAND BAR ─────────────────────────────────────────────────────── */
+.gki-cmd{height:var(--gki-bar-cmd); flex:none; background:var(--gki-surface);
+  border-bottom:1px solid var(--gki-line); display:flex; align-items:center; gap:7px; padding:0 var(--gki-pad)}
+.gki-cmd-meta{margin-left:auto; display:flex; align-items:center; gap:9px;
+  font-size:var(--gki-fs-label); color:var(--gki-muted)}
+.gki-vr{width:1px; height:20px; background:var(--gki-line-2)}
+
+/* ── 6. BUTTONS ─────────────────────────────────────────────────────────── */
+.gki-btn{
+  height:var(--gki-btn); padding:0 12px; border:1px solid var(--gki-line-2); background:var(--gki-surface);
+  font-family:inherit; font-size:var(--gki-fs-sm); font-weight:500; color:var(--gki-ink-2);
+  display:inline-flex; align-items:center; gap:7px; white-space:nowrap; cursor:pointer;
+}
+.gki-btn:hover{background:var(--gki-alt); border-color:var(--gki-line-3); color:var(--gki-ink)}
+.gki-btn:active{background:var(--gki-line); border-color:var(--gki-line-3)}
+.gki-btn:focus-visible{outline:2px solid var(--gki-focus); outline-offset:1px}
+.gki-btn[disabled]{color:var(--gki-muted); background:var(--gki-alt); border-color:var(--gki-line); cursor:not-allowed; opacity:.7}
+.gki-btn--primary{background:var(--gki-navy); border-color:var(--gki-navy); color:#fff}
+.gki-btn--primary:hover{background:var(--gki-navy-2); border-color:var(--gki-navy-2); color:#fff}
+.gki-btn--primary[disabled]{background:var(--gki-line-2); border-color:var(--gki-line-2); color:#fff}
+.gki-btn--danger{border-color:var(--gki-crit); color:var(--gki-crit)}
+.gki-btn--danger:hover{background:var(--gki-crit-bg); color:var(--gki-crit)}
+.gki-btn--ghost{border-color:transparent; background:transparent}
+.gki-btn--ghost:hover{background:var(--gki-alt); border-color:var(--gki-line)}
+
+/* ── 7. STEPPER ─────────────────────────────────────────────────────────────
+   One row, contiguous, never wrapping. Cells SHRINK before they scroll:
+   `--gki-step-pad` is a token so density can tighten them, the label lives in
+   .gki-step-l and ellipsises, and below 1280px only the current step keeps its
+   label — the rest fall back to their number. If it still overflows (Legal's 10
+   steps, Real Estate's 15), the bar scrolls and the edge shadows say so.
+   ⚠️ Cells shrink only as far as --gki-step-min; past that the bar OVERFLOWS and
+   scrolls. Without that floor a 15-section wizard compresses into itself and
+   there is nothing left to scroll (Real Estate, 2026-09-14).
+   ⚠️ Every .gki-step needs a `title` — "Step 3 of 9 · OSS & Licensing" — so a
+   truncated or number-only cell still has a name.                            */
+.gki-steps{display:flex; flex:none; border-bottom:1px solid var(--gki-line);
+  padding-left:var(--gki-pad); overflow-x:auto; overscroll-behavior-x:contain;
+  background-color:var(--gki-surface);
+  background-image:
+    linear-gradient(90deg, var(--gki-surface) 40%, rgba(255,255,255,0)),
+    linear-gradient(90deg, rgba(255,255,255,0), var(--gki-surface) 60%),
+    radial-gradient(farthest-side at 0 50%, rgba(17,20,44,.18), transparent),
+    radial-gradient(farthest-side at 100% 50%, rgba(17,20,44,.18), transparent);
+  background-position:left center, right center, left center, right center;
+  background-size:26px 100%, 26px 100%, 11px 100%, 11px 100%;
+  background-repeat:no-repeat;
+  background-attachment:local, local, scroll, scroll}
+.gki-step{display:flex; align-items:center; gap:8px; padding:0 var(--gki-step-pad);
+  height:var(--gki-step); font-size:var(--gki-step-fs); color:var(--gki-muted);
+  border-right:1px solid var(--gki-line); white-space:nowrap; cursor:pointer;
+  background:none; border-top:0; border-left:0; border-bottom:0; font-family:inherit;
+  flex:0 1 auto; min-width:var(--gki-step-min); overflow:hidden}
+.gki-step:hover{background:var(--gki-alt); color:var(--gki-ink)}
+.gki-step-l{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.gki-step-n{width:18px; height:18px; border:1px solid var(--gki-line-2); display:grid; place-items:center;
+  font-family:var(--gki-mono); font-size:var(--gki-fs-micro); flex:none}
+.gki-step--done{color:var(--gki-ink-2)}
+.gki-step--done .gki-step-n{background:var(--gki-good); border-color:var(--gki-good); color:#fff}
+.gki-step--current{color:#fff; background:var(--gki-navy); font-weight:600; flex-shrink:0}
+.gki-step--current:hover{background:var(--gki-navy-2); color:#fff}
+.gki-step--current .gki-step-n{background:#fff; border-color:#fff; color:var(--gki-navy); font-weight:600}
+.gki-step--error .gki-step-n{background:var(--gki-crit); border-color:var(--gki-crit); color:#fff}
+/* Condense: below the full-shell width, only the current step keeps its label. */
+@media (max-width:1279px){
+  .gki-step{padding:0 10px; --gki-step-min:52px}
+  .gki-step--current{--gki-step-min:104px}
+  .gki-step:not(.gki-step--current) .gki-step-l{display:none}
+}
+
+/* ── 8. BLOCK (the panel that replaces the card) ────────────────────────── */
+.gki-blk{background:var(--gki-surface); border:1px solid var(--gki-line-2)}
+.gki-blk + .gki-blk{margin-top:var(--gki-gap)}
+.gki-blk-h{height:32px; display:flex; align-items:center; gap:10px; padding:0 var(--gki-pad);
+  background:var(--gki-alt); border-bottom:1px solid var(--gki-line-2)}
+.gki-blk-h h2,.gki-blk-h h3,.gki-blk-h h4{margin:0; font-family:var(--gki-mono); font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase; font-weight:500; color:var(--gki-ink)}
+.gki-blk-h .gki-hint{margin-left:auto; font-size:var(--gki-fs-label); color:var(--gki-muted); letter-spacing:0; text-transform:none}
+.gki-blk-b{padding:var(--gki-pad)}
+.gki-secline{display:flex; align-items:center; gap:9px; font-family:var(--gki-mono); font-size:var(--gki-fs-micro);
+  letter-spacing:.14em; text-transform:uppercase; color:var(--gki-muted); margin:0 0 9px}
+.gki-secline::after{content:""; flex:1; height:1px; background:var(--gki-line)}
+
+/* ── 9. FORM GRID + FIELDS ──────────────────────────────────────────────── */
+.gki-g2{display:grid; grid-template-columns:1fr 1fr; gap:13px 20px}
+.gki-g3{display:grid; grid-template-columns:repeat(3,1fr); gap:13px 18px}
+.gki-g4{display:grid; grid-template-columns:repeat(4,1fr); gap:13px 16px}
+@media (max-width:900px){.gki-g2,.gki-g3,.gki-g4{grid-template-columns:1fr}}
+
+/* Direct child only: a <label> nested deeper (a radio or checkbox row) must not
+   inherit the uppercase field-label treatment. */
+.gki-f > label,.gki-label{display:block; font-size:var(--gki-fs-label); color:var(--gki-muted);
+  margin-bottom:4px; font-weight:500; letter-spacing:.03em; text-transform:uppercase}
+.gki-req{color:var(--gki-crit)}
+.gki-input,.gki-select,.gki-textarea{
+  width:100%; height:var(--gki-ctrl); border:1px solid var(--gki-line-2); background:var(--gki-surface);
+  padding:0 10px; font-family:inherit; font-size:var(--gki-fs); color:var(--gki-ink);
+}
+.gki-textarea{height:auto; min-height:calc(var(--gki-ctrl) * 2.4); padding:7px 10px; line-height:1.5; resize:vertical}
+.gki-input:hover,.gki-select:hover{border-color:var(--gki-line-3)}
+.gki-input:focus,.gki-select:focus,.gki-textarea:focus{
+  outline:none; border:2px solid var(--gki-focus); padding:0 9px; background:var(--gki-surface)}
+.gki-textarea:focus{padding:6px 9px}
+.gki-gbar :focus-visible,.gki-gnav a:focus-visible{outline:2px solid #fff; outline-offset:-2px}
+.gki-input::placeholder{color:var(--gki-muted)}
+.gki-input[readonly]{background:var(--gki-alt); color:var(--gki-ink-2); border-style:dashed}
+.gki-input[disabled],.gki-select[disabled]{background:var(--gki-alt); color:var(--gki-muted); cursor:not-allowed}
+.gki-input[aria-invalid="true"]{border-color:var(--gki-crit); background:var(--gki-crit-bg)}
+.gki-input--mono{font-family:var(--gki-mono); font-variant-numeric:tabular-nums}
+.gki-help{font-size:var(--gki-fs-label); color:var(--gki-muted); margin-top:4px}
+.gki-help--error{color:var(--gki-crit); font-weight:500}
+
+/* segmented control — for 2–5 exclusive options */
+.gki-seg{display:inline-flex; border:1px solid var(--gki-line-2)}
+.gki-seg button{padding:0 13px; height:var(--gki-ctrl); display:flex; align-items:center;
+  font-family:inherit; font-size:var(--gki-fs-sm); color:var(--gki-ink-2); background:var(--gki-surface);
+  border:0; border-right:1px solid var(--gki-line-2); cursor:pointer; white-space:nowrap}
+.gki-seg button:last-child{border-right:0}
+.gki-seg button:hover{background:var(--gki-alt)}
+.gki-seg button[aria-pressed="true"]{background:var(--gki-navy); color:#fff; font-weight:500}
+
+/* radio + checkbox — square marks */
+.gki-radios{display:flex; flex-direction:column; gap:8px}
+/* These ARE <label> elements — reset anything the field-label rule would impose. */
+.gki-radio,.gki-check{display:flex; align-items:flex-start; gap:9px; font-size:12.5px;
+  color:var(--gki-ink-2); cursor:pointer; text-transform:none; letter-spacing:0;
+  font-weight:400; margin-bottom:0}
+.gki-radio-mk,.gki-check-mk{width:14px; height:14px; border:1px solid var(--gki-line-2);
+  background:var(--gki-surface); flex:none; margin-top:1px}
+.gki-radio:hover .gki-radio-mk,.gki-check:hover .gki-check-mk{border-color:var(--gki-line-3)}
+.gki-radio--on{color:var(--gki-ink); font-weight:500}
+.gki-radio--on .gki-radio-mk{border-color:var(--gki-navy); box-shadow:inset 0 0 0 3px #fff, inset 0 0 0 14px var(--gki-navy)}
+.gki-check--on .gki-check-mk{background:var(--gki-navy); border-color:var(--gki-navy); color:#fff;
+  display:grid; place-items:center; font-size:10px; font-family:var(--gki-mono)}
+.gki-radio input,.gki-check input{position:absolute; opacity:0; width:0; height:0}
+.gki-radio input:focus-visible + .gki-radio-mk,
+.gki-check input:focus-visible + .gki-check-mk{outline:2px solid var(--gki-focus); outline-offset:1px}
+
+/* ── 10. TAGS + STATUS ──────────────────────────────────────────────────── */
+.gki-tag{display:inline-flex; align-items:center; gap:6px; font-family:var(--gki-mono); font-size:var(--gki-fs-label);
+  font-weight:500; letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border:1px solid}
+.gki-tag--draft{color:var(--gki-progress); border-color:var(--gki-progress); background:var(--gki-progress-bg)}
+.gki-tag--signing{color:var(--gki-navy); border-color:var(--gki-navy); background:var(--gki-navy-bg)}
+.gki-tag--issued{color:var(--gki-good); border-color:var(--gki-good); background:var(--gki-good-bg)}
+.gki-tag--blocked{color:var(--gki-crit); border-color:var(--gki-crit); background:var(--gki-crit-bg)}
+.gki-tag--solid{background:var(--gki-navy); border-color:var(--gki-navy); color:#fff}
+.gki-modchip{display:inline-flex; align-items:center; gap:7px; font-size:var(--gki-fs-sm); color:var(--gki-ink-2)}
+.gki-modchip::before{content:""; width:9px; height:9px; background:var(--gki-module); flex:none}
+.gki-env{display:inline-flex; align-items:center; gap:6px; font-family:var(--gki-mono); font-size:var(--gki-fs-label);
+  letter-spacing:.06em; text-transform:uppercase; padding:2px 7px; border:1px solid var(--gki-good); color:var(--gki-good)}
+.gki-env::before{content:""; width:6px; height:6px; background:var(--gki-good)}
+.gki-env--off{border-color:var(--gki-muted); color:var(--gki-muted)}
+.gki-env--off::before{background:var(--gki-muted)}
+
+/* ── 11. ALERTS ─────────────────────────────────────────────────────────── */
+.gki-alert{display:flex; gap:10px; padding:10px 12px; font-size:12.5px; margin-bottom:var(--gki-gap);
+  border:1px solid; border-left-width:4px}
+.gki-alert-ic{font-family:var(--gki-mono); font-weight:700; flex:none}
+.gki-alert--error{border-color:var(--gki-crit); background:var(--gki-crit-bg); color:var(--gki-crit)}
+.gki-alert--warn{border-color:var(--gki-progress); background:var(--gki-progress-bg); color:var(--gki-slate-dark)}
+.gki-alert--info{border-color:var(--gki-navy); background:var(--gki-navy-bg); color:var(--gki-navy)}
+.gki-alert--ok{border-color:var(--gki-good); background:var(--gki-good-bg); color:var(--gki-good)}
+
+/* ── 12. TABLE ──────────────────────────────────────────────────────────── */
+.gki-toolrow{height:var(--gki-bar-tool); flex:none; display:flex; align-items:center; gap:7px;
+  padding:0 var(--gki-pad); background:var(--gki-surface); border-bottom:1px solid var(--gki-line)}
+.gki-search{width:320px; height:26px; border:1px solid var(--gki-line-2); background:var(--gki-alt);
+  display:flex; align-items:center; padding:0 9px; font-size:var(--gki-fs-sm); color:var(--gki-muted); gap:7px}
+.gki-fchip{font-size:11.5px; border:1px solid var(--gki-line-2); padding:3px 9px; color:var(--gki-ink-2);
+  background:var(--gki-surface); cursor:pointer; font-family:inherit}
+.gki-fchip:hover{background:var(--gki-alt)}
+.gki-fchip[aria-pressed="true"]{background:var(--gki-navy); border-color:var(--gki-navy); color:#fff; font-weight:500}
+
+.gki-tbl{width:100%; border-collapse:collapse; font-size:12.5px; background:var(--gki-surface)}
+.gki-tbl th{text-align:left; font-family:var(--gki-mono); font-size:var(--gki-fs-micro); letter-spacing:.12em;
+  text-transform:uppercase; font-weight:500; color:var(--gki-ink-2); background:var(--gki-alt);
+  border-bottom:1px solid var(--gki-line-3); padding:0 12px; height:28px; white-space:nowrap;
+  position:sticky; top:0; z-index:1}
+.gki-tbl td{border-bottom:1px solid var(--gki-line); padding:0 12px; height:var(--gki-row);
+  white-space:nowrap; color:var(--gki-ink-2)}
+.gki-tbl tbody tr:hover td{background:var(--gki-alt)}
+.gki-tbl tbody tr[aria-selected="true"] td{background:var(--gki-navy-bg); border-bottom-color:var(--gki-line-2)}
+.gki-tbl tbody tr[aria-selected="true"] td:first-child{box-shadow:inset 3px 0 0 var(--gki-navy)}
+.gki-tbl td b{color:var(--gki-ink); font-weight:600}
+.gki-tbl .gki-k{font-family:var(--gki-mono); font-size:11.5px; color:var(--gki-ink)}
+.gki-tbl .gki-num{text-align:right; font-variant-numeric:tabular-nums}
+.gki-tbl-empty{padding:34px var(--gki-pad); text-align:center; color:var(--gki-muted); font-size:12.5px}
+
+/* ── 13. SIDE COLUMN (drafts / checklist) ───────────────────────────────── */
+.gki-side{width:246px; flex:none; background:var(--gki-surface); border-left:1px solid var(--gki-line-2);
+  padding:var(--gki-pad); overflow:auto}
+.gki-item{border:1px solid var(--gki-line); padding:8px 10px; margin-bottom:7px; display:flex; gap:9px;
+  align-items:flex-start; cursor:pointer; background:var(--gki-surface); width:100%; text-align:left; font-family:inherit}
+.gki-item:hover{border-color:var(--gki-line-3); background:var(--gki-alt)}
+.gki-item[aria-current="true"]{border-color:var(--gki-navy); border-left-width:3px; background:var(--gki-alt)}
+.gki-item-nm{font-size:12.5px; font-weight:600; display:block; color:var(--gki-ink)}
+.gki-item-mt{font-size:var(--gki-fs-label); color:var(--gki-muted); margin-top:2px; display:block}
+.gki-chk{display:flex; gap:9px; font-size:12.5px; padding:5px 0; color:var(--gki-ink-2); align-items:flex-start}
+.gki-chk-mk{width:15px; height:15px; flex:none; display:grid; place-items:center; font-size:10px; color:#fff;
+  background:var(--gki-good); margin-top:1px; font-family:var(--gki-mono)}
+.gki-chk-mk--todo{background:var(--gki-surface); border:1px solid var(--gki-line-2)}
+.gki-chk-mk--bad{background:var(--gki-crit)}
+
+/* ── 14. KEY / VALUE (read-only facts) ──────────────────────────────────── */
+.gki-kv{display:flex; gap:10px; font-size:12.5px; padding:3px 0}
+.gki-kv dt,.gki-kv .gki-kv-k{color:var(--gki-muted); width:130px; flex:none; font-size:11.5px}
+.gki-kv dd,.gki-kv .gki-kv-v{margin:0; font-weight:500; color:var(--gki-ink)}
+
+/* ── 15. STATUS BAR ─────────────────────────────────────────────────────── */
+.gki-statusbar{height:var(--gki-bar-status); flex:none; background:var(--gki-surface);
+  border-top:1px solid var(--gki-line-2); display:flex; align-items:center; gap:14px;
+  padding:0 var(--gki-pad); font-size:11.5px; color:var(--gki-muted)}
+.gki-statusbar b{color:var(--gki-ink); font-weight:600}
+.gki-statusbar-right{margin-left:auto}
+
+/* ── 16. PROGRESS ───────────────────────────────────────────────────────── */
+.gki-bar{width:110px; height:5px; background:var(--gki-line); display:block; position:relative}
+.gki-bar i{position:absolute; left:0; top:0; bottom:0; background:var(--gki-navy)}
+
+/* ── 17. RESPONSIVE ─────────────────────────────────────────────────────── */
+/* < 1280px: the side column collapses to a toggle the module opens.        */
+@media (max-width:1279px){ .gki-side{display:none} .gki-side[data-open="true"]{display:block} }
+/* < 1024px: sub-bar scrolls; command bar keeps primary + overflow only.    */
+@media (max-width:1023px){
+  .gki-subbar{overflow-x:auto}
+  .gki-gsearch{display:none}
+  .gki-cmd-meta{display:none}
+}
+
+/* ── 18. ACCESSIBILITY ──────────────────────────────────────────────────── */
+.gki-app :focus-visible{outline:2px solid var(--gki-focus); outline-offset:1px}
+.gki-sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap; border:0}
+@media (prefers-reduced-motion:reduce){ .gki-app *{transition:none !important; animation:none !important} }
+@media print{ .gki-gbar,.gki-subbar,.gki-cmd,.gki-side,.gki-statusbar{display:none} }
+
+/* ── 19b. DEV MARKER ────────────────────────────────────────────────────────
+   A DEV build keeps its app's REAL accent colour — violet is Technology's brand
+   colour and no longer means "DEV". Instead a DEV build shows two unmissable
+   marks: a white DEV tag beside the wordmark, and a hatched strip under the
+   global bar. Set .gki-app--dev on the app root in the DEV config only.      */
+.gki-devtag{display:flex; align-items:center; height:24px; margin-left:12px; padding:0 11px;
+  background:#fff; color:var(--gki-navy); font-family:var(--gki-mono); font-size:11px;
+  font-weight:700; letter-spacing:.2em}
+.gki-devstripe{height:6px; flex:none; background:repeating-linear-gradient(45deg,
+  var(--gki-navy) 0 9px, #FFFFFF 9px 18px)}
+.gki-app:not(.gki-app--dev) .gki-devtag,
+.gki-app:not(.gki-app--dev) .gki-devstripe{display:none}
+
+/* ── 19c. COMING SOON / EMPTY STATE ─────────────────────────────────────────
+   A module that exists in the navigation but is not built yet. Same shell, so
+   the app never shows a dead link or a blank pane.                           */
+.gki-empty{flex:1; display:grid; place-items:center; padding:40px 24px}
+.gki-empty-in{max-width:540px; text-align:center}
+.gki-empty h2{margin:14px 0 10px; font-size:22px; font-weight:600; letter-spacing:-.01em}
+.gki-empty p{margin:0 auto 8px; color:var(--gki-muted); font-size:13px; line-height:1.6; max-width:46ch}
+.gki-empty .gki-secline{justify-content:center; margin-top:22px}
+.gki-empty .gki-secline::after{display:none}
+
+/* ── 19. LANGUAGE TOGGLE (global bar) ───────────────────────────────────────
+   Interface language only. It never changes the language of the DOCUMENT a
+   module generates — that stays the module's own ID/EN setting. */
+/* ⚠️ ENGLISH ONLY (SAM, 2026-09-15). The switch is HIDDEN BY DEFAULT in the
+   kit — every app was carrying its own local copy of this rule, which is
+   exactly the drift the kit exists to prevent. Nothing is deleted: the markup,
+   the dictionaries and GKI.t() all stay. To bring bilingual back, put
+   `gki-i18n` on the app root and set EN_ONLY = false in the spine. */
+.gki-lang{display:none; align-items:center; height:26px; border:1px solid #3A4272; margin-right:10px}
+.gki-i18n .gki-lang{display:flex}
+.gki-lang button{font-family:var(--gki-mono); font-size:11px; letter-spacing:.08em; padding:0 9px;
+  height:100%; background:transparent; border:0; color:#9AA3C8; cursor:pointer}
+.gki-lang button[aria-pressed="true"]{background:#fff; color:var(--gki-navy); font-weight:600}
+
+
+/* ── 20. THE BANNER — v1.8, 2026-10-18 (SAM) ────────────────────────────────
+   The shared top banner, built by gki-banner.js (same release). OPT-IN: an app
+   that still emits .gki-gbar is untouched by this section. Approved render:
+   GKI CORE\Claude outputs\banner\ (SAM 2026-10-18).
+   ⚠️ ROUNDED, deliberately — the one place the kit's "border-radius: 0"
+   rule does not apply (SAM approved the banner render as drawn). Every surface
+   below the banner stays square.
+   v1.8.1 COMPACT (SAM 2026-10-18): 63px tall, 14px side padding so the mark
+   lines up with the app content below. Measured in IBM Plex Sans:
+   - the mark spans the top of CORE to the foot of ONE SYSTEM;
+   - CORE sits left of its natural start (SAM's option B, scaled);
+   - the app tag spans CORE's cap height; APP sits on ONE SYSTEM's line;
+   - the A of APP starts under the first letter of the app name.            */
+:root{
+  --gki-bn-glow:#2A3378;              /* the light in the top-right of the navy   */
+  --gki-bn-word-a:#FFFFFF;            /* CORE wordmark gradient, and the mark     */
+  --gki-bn-word-b:#AEB8FF;
+  --gki-bn-dim:rgba(255,255,255,.55); /* ONE SYSTEM · APP                         */
+  --gki-bn-meta:rgba(255,255,255,.72);/* date · time · weather                    */
+  --gki-bn-rule:rgba(255,255,255,.22);/* the divider, separators, outlines        */
+  --gki-bn-fill:rgba(255,255,255,.08);
+}
+.gki-banner{flex:none; display:flex; align-items:center; padding:12px 14px; position:relative;
+  background:radial-gradient(1200px 420px at 82% -20%, var(--gki-bn-glow) 0, var(--gki-navy) 58%);
+  color:#fff; font-family:var(--gki-font); line-height:1}
+.gki-bn-lock{display:flex; align-items:flex-start; gap:12px; flex:none}
+.gki-bn-mark{display:block; flex:none; width:32.5px; height:32.5px; margin-top:4.5px}
+.gki-bn-stop-a{stop-color:var(--gki-bn-word-a)}
+.gki-bn-stop-b{stop-color:var(--gki-bn-word-b)}
+.gki-bn-core{font-weight:700; font-size:26px; letter-spacing:.22em; line-height:1;
+  margin-left:calc(-.07em - 1.4px);
+  background:linear-gradient(100deg, var(--gki-bn-word-a) 0%, var(--gki-bn-word-b) 60%);
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.gki-bn-sub{font-size:7.5px; font-weight:400; letter-spacing:.32em; line-height:9px;
+  color:var(--gki-bn-dim); margin-top:4px; white-space:nowrap}
+.gki-bn-div{flex:none; width:1.5px; align-self:stretch; background:var(--gki-bn-rule); margin:0 16px}
+.gki-bn-app{display:flex; flex-direction:column; align-items:flex-start; align-self:flex-start; flex:none}
+.gki-bn-tag{display:flex; align-items:center; box-sizing:border-box; margin-top:4.5px;
+  height:18.75px; padding:0 9px 0 11px; border-radius:5px; background:var(--gki-module);
+  color:#fff; font-weight:700; font-size:12px; letter-spacing:.24em; white-space:nowrap}
+.gki-bn-appsub{margin-top:6.75px; margin-left:11.75px}
+.gki-bn-dev{flex:none; align-self:center; margin-left:16px; background:#fff; color:var(--gki-navy);
+  font-weight:700; font-size:10px; letter-spacing:.1em; padding:4px 8px; border-radius:4px}
+.gki-bn-right{margin-left:auto; display:flex; align-items:center; gap:14px; flex:none}
+.gki-bn-meta{display:flex; align-items:center; margin-right:14px; font-size:10.5px; letter-spacing:.2em;
+  color:var(--gki-bn-meta); white-space:nowrap}
+.gki-bn-sep{width:1px; height:12px; background:var(--gki-bn-rule); margin:0 14px}
+.gki-bn-sep[hidden],.gki-bn-wx[hidden]{display:none}
+.gki-bn-back{letter-spacing:.18em; color:var(--gki-bn-meta); text-decoration:none; white-space:nowrap;
+  border:1px solid var(--gki-bn-rule); border-radius:8px; padding:6px 11px; font-size:11px}
+.gki-bn-back:hover{color:#fff; border-color:var(--gki-bn-meta)}
+.gki-bn-themewrap{position:relative; display:flex}
+.gki-bn-theme{display:flex; padding:3px; border-radius:20px; cursor:pointer; font:inherit;
+  background:var(--gki-bn-fill); border:1px solid var(--gki-bn-rule)}
+.gki-bn-sun,.gki-bn-moon{width:24px; height:24px; border-radius:50%; display:grid; place-items:center; font-size:13px}
+.gki-bn-sun{background:#fff; color:var(--gki-navy)}
+.gki-bn-moon{color:var(--gki-bn-meta)}
+.gki-bn-note{position:absolute; top:38px; right:-30px; z-index:20; white-space:nowrap; pointer-events:none;
+  background:#fff; color:var(--gki-navy); font-size:12px; font-weight:600; letter-spacing:.06em;
+  padding:9px 13px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.25);
+  opacity:0; transform:translateY(-4px); transition:opacity .15s, transform .15s}
+.gki-bn-note::before{content:""; position:absolute; top:-5px; right:48px; width:10px; height:10px;
+  background:#fff; transform:rotate(45deg)}
+.gki-bn-note.is-on{opacity:1; transform:none}
+/* The app's own avatar, re-dressed for the banner: a white circle, initials. */
+.gki-banner .gki-gavatar{width:32px; height:32px; margin:0; border-radius:50%;
+  font-family:var(--gki-font); font-size:12px; font-weight:700; letter-spacing:.02em}
+.gki-bn-theme:focus-visible,.gki-bn-back:focus-visible{outline:2px solid #fff; outline-offset:2px}
+/* v1.8.2 — TABS INSIDE THE BANNER (SAM 2026-10-18, CRM option B). An app with
+   screens passes its .gki-gnav to GKI.banner.build({ nav }); it sits after the
+   app tag, full banner height, square cells as in the old bar. The kit's own
+   .gki-gnav a rules (colour, active cell in --gki-module) still apply.       */
+.gki-banner .gki-gnav{flex:none; align-self:stretch; margin:-12px 0 -12px 18px}
+.gki-banner .gki-gnav a{padding:0 16px}
+/* v1.8.3 — AN ICON INSTEAD OF THE TAG (SAM 2026-10-18, IMMIGRATION option B).
+   build({ icon:'flag-id' }): the icon is the CORE mark's height and sits where
+   the mark sits; the app name loses its box and APP stays under its first
+   letter. ⚠️ The flag's red is the FLAG's, not the app's accent (IMMIGRATION's
+   accent is navy): fixed colours, like the white the kit already hard-codes. */
+.gki-bn-approw{display:flex; align-items:flex-start; gap:12px; flex:none; align-self:flex-start}
+.gki-bn-icon{display:block; flex:none; height:32.5px; margin-top:4.5px; border-radius:3px; overflow:hidden}
+.gki-bn-icon--flag-id{width:48.75px; background:linear-gradient(#CE1126 50%, #fff 50%)}
+.gki-bn-app--icon .gki-bn-tag{background:none; padding:0}
+.gki-bn-app--icon .gki-bn-appsub{margin-left:.5px}
+@media print{ .gki-banner{display:none} }
+@media (prefers-reduced-motion: reduce){ .gki-bn-note{transition:none} }
